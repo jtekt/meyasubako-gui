@@ -14,6 +14,11 @@ Vue.use(VueRouter)
     path: '/new',
     name: 'new',
     component: () => import('../views/NewMonku.vue')
+  },
+  {
+    path: '/monku',
+    name: 'monku',
+    component: () => import('../views/Monku.vue')
   }
 ]
 

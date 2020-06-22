@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <h1>面倒くさい</h1>
+
     <div class="new_button_wrapper">
       <router-link
         class="new_button"
@@ -10,12 +11,15 @@
     </div>
 
     <div class="monku_wrapper">
+      <transition-group name="flip-list" tag="div">
 
-      <div class="monku" v-for="complaint in sorted_complaints" v-bind:key="complaint._id">
-        <span class="likes">いいね x {{complaint.likes}}</span>
-        <span>{{complaint.content}}</span>
-        <button type="button" @click="like(complaint._id)">いいね！</button>
-      </div>
+        <Item
+          v-for="complaint in sorted_complaints"
+          v-bind:key="complaint._id"
+          v-bind:item="complaint"
+          @vote="vote($event)"/>
+
+      </transition-group>
 
     </div>
   </div>
@@ -23,12 +27,13 @@
 
 <script>
 // @ is an alias to /src
-//import HelloWorld from '@/components/HelloWorld.vue'
+import Item from '@/components/Item.vue'
+
 
 export default {
   name: 'Home',
   components: {
-
+    Item,
   },
   data(){
     return {
@@ -50,12 +55,21 @@ export default {
       })
       .catch(error => console.log(error))
     },
-    like(id){
-      this.axios.post(`${process.env.VUE_APP_MENDOKUSAI_API_URL}/like`, {
-        _id: id
+    vote(data){
+
+      this.axios.post(`${process.env.VUE_APP_MENDOKUSAI_API_URL}/vote`, {
+        _id: data.id,
+        vote: data.vote,
+        collection: 'monku',
       })
-      .then(() => this.get_monku())
+      .then((response) => {
+        let found_complaint = this.complaints.find(complaint => { return complaint._id === response.data.value._id
+        })
+
+        if(found_complaint) found_complaint.likes = response.data.value.likes
+      })
       .catch(error => console.log(error))
+
     },
   },
   computed: {
@@ -71,22 +85,7 @@ export default {
 .monku_wrapper {
   margin-top: 1em;
 }
-.monku{
-  display: flex;
-  align-items: center;
-  padding: 0.5em;
-  margin: 0.5em 0;
-  border: 1px solid #dddddd;
-}
 
-.monku .likes {
-  padding-right: 0.5em;
-  border-right: 1px solid #dddddd;
-  margin-right: 0.5em;
-}
-.monku button {
-  margin-left: auto;
-}
 
 .new_button_wrapper {
   display: flex;

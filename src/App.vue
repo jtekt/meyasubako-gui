@@ -40,4 +40,9 @@ main {
   padding: 0.5em;
 }
 
+
+.flip-list-move {
+  transition: transform 1s;
+}
+
 </style>
