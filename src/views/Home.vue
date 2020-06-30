@@ -1,23 +1,25 @@
 <template>
   <div class="home">
-    <h1>面倒くさい</h1>
+    <h1>無駄削減</h1>
+    <p>無駄削減のために、効率が悪い手続きについての文句をここにリストアップしましょう！</p>
 
-    <div class="new_button_wrapper">
-      <router-link
-        class="new_button"
-        :to="{ name: 'new', params: {} }">
-        New
-      </router-link>
-    </div>
+    <h2>新しい文句</h2>
+    <form class="" @submit.prevent="submit()">
+      <input type="text" v-model="monku_content" placeholder="文句内容">
+      <input type="submit">
+    </form>
 
+    <h2>ある文句</h2>
     <div class="monku_wrapper">
       <transition-group name="flip-list" tag="div">
 
         <Item
+          link
           v-for="complaint in sorted_complaints"
           v-bind:key="complaint._id"
           v-bind:item="complaint"
-          @vote="vote($event)"/>
+          @vote="vote($event)"
+          @deleteItem="delete_monku($event)"/>
 
       </transition-group>
 
@@ -37,6 +39,7 @@ export default {
   },
   data(){
     return {
+      monku_content: '',
       complaints: []
     }
   },
@@ -44,6 +47,17 @@ export default {
     this.get_monku()
   },
   methods: {
+    submit(){
+      if(!confirm('文句を登録しますか？')) return
+      this.axios.post(`${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku`, {
+        content: this.monku_content
+      })
+      .then(() => {
+        this.monku_content = ''
+        this.get_monku()
+      })
+      .catch(error => console.log(error))
+    },
     get_monku(){
       this.axios.get(`${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku`)
       .then(response => {
@@ -56,11 +70,9 @@ export default {
       .catch(error => console.log(error))
     },
     vote(data){
-
-      this.axios.post(`${process.env.VUE_APP_MENDOKUSAI_API_URL}/vote`, {
-        _id: data.id,
+      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${data.id}/vote`
+      this.axios.post(url, {
         vote: data.vote,
-        collection: 'monku',
       })
       .then((response) => {
         let found_complaint = this.complaints.find(complaint => { return complaint._id === response.data.value._id
@@ -69,7 +81,14 @@ export default {
         if(found_complaint) found_complaint.likes = response.data.value.likes
       })
       .catch(error => console.log(error))
-
+    },
+    delete_monku(id){
+      if(confirm(`ホンマに？`)){
+        let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${id}`
+        this.axios.delete(url)
+        .then(() => {this.get_monku()})
+        .catch(error => console.log(error))
+      }
     },
   },
   computed: {
@@ -87,16 +106,6 @@ export default {
 }
 
 
-.new_button_wrapper {
-  display: flex;
-  justify-content: center;
-}
-.new_button {
-  text-decoration: none;
-  color: currentColor;
-  padding: 0.5em;
-  border: 1px solid #444444;
-  border-radius: 0.5em;
-}
+
 
 </style>

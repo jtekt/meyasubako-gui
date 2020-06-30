@@ -6,29 +6,30 @@
 
       <Item
         v-bind:item="monku"
-        @vote="vote_monku($event)"/>
+        @vote="vote_monku($event)"
+        @deleteItem="delete_monku($event)"/>
 
-      <h2>Proposals</h2>
+      <h2>解決提案</h2>
+
+      <h2>新しい提案</h2>
+      <form class="" @submit.prevent="submit_proposal()">
+        <input type="text" v-model="proposal_content" placeholder="提案内容">
+        <input type="submit" >
+      </form>
+
+      <h2>ある提案</h2>
       <transition-group name="flip-list" tag="div">
         <Item
           v-for="proposal in sorted_proposals"
           v-bind:key="proposal._id"
           v-bind:item="proposal"
-          @vote="vote_proposal($event)"/>
+          @vote="vote_proposal($event)"
+          @deleteItem="delete_proposal($event)"/>
       </transition-group>
 
-
-
-
-
-
-
-      <h2>New proposal</h2>
-      <form class="" @submit.prevent="submit_proposal()">
-        <input type="text" v-model="proposal_content">
-        <input type="submit" >
-      </form>
     </template>
+
+
 
   </div>
 </template>
@@ -55,28 +56,33 @@ export default {
   },
   methods: {
     submit_proposal(){
-      this.axios.post(`${process.env.VUE_APP_MENDOKUSAI_API_URL}/proposal`, {
-        monku_id: this.$route.query.id,
+      if(!confirm('提案を登録しますか？')) return
+
+      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${this.monku._id}/proposals`
+      this.axios.post(url, {
         content: this.proposal_content,
       })
       .then(() => {
+        // Clear input
+        this.proposal_content = ''
+
+        // Reload data
         this.get_monku()
       })
       .catch(error => console.log(error))
     },
     get_monku(){
-      this.axios.get(`${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku`, {
-        params: {_id: this.$route.query.id}
-      })
+      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${this.$route.query.id}`
+      this.axios.get(url)
       .then(response => {
         this.monku = response.data[0]
       })
       .catch(error => console.log(error))
     },
     get_proposals(){
-      this.axios.get(`${process.env.VUE_APP_MENDOKUSAI_API_URL}/proposal`, {
-        params: {monku_id: this.$route.query.id}
-      })
+      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${this.$route.query.id}/proposals`
+
+      this.axios.get(url)
       .then(response => {
         console.log(response.data)
 
@@ -84,10 +90,10 @@ export default {
       .catch(error => console.log(error))
     },
     vote_monku(data){
-      this.axios.post(`${process.env.VUE_APP_MENDOKUSAI_API_URL}/vote`, {
-        _id: data.id,
+      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${this.$route.query.id}/vote`
+
+      this.axios.post(url, {
         vote: data.vote,
-        collection: 'monku',
       })
       .then((response) => {
         this.monku.likes = response.data.value.likes
@@ -95,10 +101,10 @@ export default {
       .catch(error => console.log(error))
     },
     vote_proposal(data){
-      this.axios.post(`${process.env.VUE_APP_MENDOKUSAI_API_URL}/vote`, {
-        _id: data.id,
+      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/proposals/${data.id}/vote`
+
+      this.axios.post(url, {
         vote: data.vote,
-        collection: 'proposals',
       })
       .then((response) => {
         let found_proposal = this.monku.proposals.find(proposal => { return proposal._id === response.data.value._id
@@ -108,11 +114,39 @@ export default {
       })
       .catch(error => console.log(error))
     },
+    delete_monku(id){
+      if(confirm(`ホンマに？`)){
+        let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${id}`
+        this.axios.delete(url)
+        .then(() => {
+          this.$router.push('/')
+        })
+        .catch(error => console.log(error))
+      }
+    },
+    delete_proposal(id){
+      if(confirm(`ホンマに？`)){
+        let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/proposals/${id}`
+        this.axios.delete(url)
+        .then(() => {
+          // Reload data
+          this.get_monku()
+        })
+        .catch(error => console.log(error))
+      }
+    },
+
 
   },
   computed: {
     sorted_proposals(){
       return this.monku.proposals.slice().sort((a, b) => {return b.likes - a.likes});
+    },
+    user_is_admin(){
+      if(this.$store.state.user){
+        return !!this.$store.state.user.properties.isAdmin
+      }
+      else return false
     }
   }
 

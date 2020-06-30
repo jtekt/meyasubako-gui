@@ -13,7 +13,7 @@
 //import HelloWorld from '@/components/HelloWorld.vue'
 
 export default {
-  name: 'Home',
+  name: 'NewMonku',
   components: {
 
   },
@@ -38,11 +38,5 @@ export default {
 </script>
 
 <style scoped>
-form {
-  display: flex;
-}
 
-form input[type="text"]{
-  flex-grow: 1;
-}
 </style>
