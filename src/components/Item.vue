@@ -1,5 +1,7 @@
 <template>
-  <div class="item">
+  <div
+    class="item"
+    :class="{hoverable: link}">
 
 
     <router-link
@@ -129,5 +131,15 @@ button:hover {
 .voted {
   color: #c00000;
 }
+
+.hoverable {
+  transition: background-color 0.25s;
+}
+
+.hoverable:hover {
+  background-color: #eeeeee;
+}
+
+
 
 </style>

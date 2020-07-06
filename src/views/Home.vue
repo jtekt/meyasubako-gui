@@ -10,6 +10,7 @@
     </form>
 
     <h2>ある文句</h2>
+    <p>文句をクリックすると対策の提案書けるようになります</p>
     <div class="monku_wrapper">
       <transition-group name="flip-list" tag="div">
 

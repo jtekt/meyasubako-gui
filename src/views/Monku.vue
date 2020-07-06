@@ -11,13 +11,13 @@
 
       <h2>解決提案</h2>
 
-      <h2>新しい提案</h2>
+      <h3>新しい提案</h3>
       <form class="" @submit.prevent="submit_proposal()">
         <input type="text" v-model="proposal_content" placeholder="提案内容">
         <input type="submit" >
       </form>
 
-      <h2>ある提案</h2>
+      <h3>ある提案</h3>
       <transition-group name="flip-list" tag="div">
         <Item
           v-for="proposal in sorted_proposals"

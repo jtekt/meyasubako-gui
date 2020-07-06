@@ -2,20 +2,12 @@
   <div id="app">
 
     <AppTemplate
-      applicationName="それは面倒くさいな！">
+      applicationName="「それは面倒くさいな！」">
       <template v-slot:navigation>
         <router-link :to="{ name: 'Home' }">Home</router-link>
+        <router-link :to="{ name: 'about' }">About</router-link>
       </template>
     </AppTemplate>
-
-    <!--
-    <nav>
-      <router-link to="/">Home</router-link>
-    </nav>
-    <main>
-      <router-view/>
-    </main>
-    -->
 
   </div>
 </template>
