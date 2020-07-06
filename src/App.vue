@@ -1,20 +1,33 @@
 <template>
   <div id="app">
+
+    <AppTemplate
+      applicationName="それは面倒くさいな！">
+      <template v-slot:navigation>
+        <router-link :to="{ name: 'Home' }">Home</router-link>
+      </template>
+    </AppTemplate>
+
+    <!--
     <nav>
       <router-link to="/">Home</router-link>
     </nav>
     <main>
       <router-view/>
     </main>
+    -->
 
   </div>
 </template>
 
 <script>
+import AppTemplate from '@moreillon/vue_application_template_flex'
 
 export default {
   name: 'App',
-
+  components: {
+    AppTemplate
+  },
   mounted(){
     var jwt = this.$cookies.get("jwt")
     if(jwt) {
@@ -45,21 +58,7 @@ body {
 
 }
 
-nav {
-  display: flex;
-  color: white;
-  background-color: #444444;
-}
 
-nav a {
-  padding: 0.5em;
-  text-decoration: none;
-  color: currentColor;
-}
-
-main {
-  padding: 0.5em;
-}
 
 
 .flip-list-move {
