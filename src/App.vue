@@ -70,18 +70,22 @@ body {
 }
 
 form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  text-align: center;
 }
 
 form > * {
   margin: 0.5em;
-  padding: 0.25em;
+  padding: 0.5em;
 }
 
-form input[type="text"]{
+form input[type="text"] {
   width: 75%;
+}
+
+form input[type="submit"] {
+  background-color: white;
+  border: 1px solid #444444;
+  cursor: pointer;
 }
 
 
