@@ -12,17 +12,18 @@
     </router-link>
 
     <span
+      class="proposal_count"
+      v-if="item.proposals">
+      解決提案：{{item.proposals.length}}
+    </span>
+
+    <span
       class="monku_content"
       v-else>
       {{item.content}}
     </span>
 
-    <button
-      v-if="user_is_admin"
-      type="button"
-      @click="delete_item(item._id)">
-      <delete-icon/>
-    </button>
+
 
 
 
@@ -42,6 +43,13 @@
       :disabled="voted !== 0"
       @click.stop="vote(item._id, -1)">
       <thumb-down-icon />
+    </button>
+
+    <button
+      v-if="user_is_admin"
+      type="button"
+      @click="delete_item(item._id)">
+      <delete-icon/>
     </button>
 
 
@@ -75,7 +83,6 @@ export default {
   },
   methods: {
     vote(id, vote){
-      if(!confirm('ホンマに？')) return
       this.voted = vote
       this.$emit('vote', {id: id, vote: vote})
     },
@@ -97,12 +104,15 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .item{
-
   display: flex;
-  align-items: stretch;
+  align-items: center;
   padding: 0.5em;
   margin: 0.5em 0;
   border: 1px solid #dddddd;
+}
+
+.item > *:not(:last-child){
+  margin-right: 0.5em;
 }
 
 .monku_content {
@@ -138,6 +148,14 @@ button:hover {
 
 .hoverable:hover {
   background-color: #eeeeee;
+}
+
+.proposal_count {
+  flex-shrink: 0;
+}
+
+button {
+  cursor: pointer;
 }
 
 
