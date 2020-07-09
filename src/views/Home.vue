@@ -11,6 +11,11 @@
 
     <h2>ある文句</h2>
     <p>文句をクリックすると対策の提案書けるようになります</p>
+    <p>
+      Sorting:
+      <button type="button" :class="{active: sorting ==='timestamp' }" @click="sorting='timestamp'">Date</button>
+      <button type="button" :class="{active: sorting ==='likes' }" @click="sorting='likes'">Likes</button>
+    </p>
     <div class="monku_wrapper">
       <transition-group name="flip-list" tag="div">
 
@@ -41,7 +46,9 @@ export default {
   data(){
     return {
       monku_content: '',
-      complaints: []
+      complaints: [],
+      sorting: 'likes',
+      ordering: 1,
     }
   },
   mounted(){
@@ -94,7 +101,14 @@ export default {
   },
   computed: {
     sorted_complaints(){
-      return this.complaints.slice().sort((a, b) => {return b.likes - a.likes});
+
+      if(this.sorting === 'timestamp'){
+        return this.complaints.slice().sort((a, b) => {return new Date (b.timestamp) - new Date (a.timestamp)})
+      }
+      else {
+        return this.complaints.slice().sort((a, b) => {return b.likes - a.likes})
+      }
+
     }
   }
 
@@ -110,5 +124,15 @@ export default {
   transition: transform 1s;
 }
 
+button {
+  border: 2px solid #c00000;
+  background: white;
+  color: #c00000;
+}
+
+button.active {
+  background: #c00000;
+  color: white;
+}
 
 </style>

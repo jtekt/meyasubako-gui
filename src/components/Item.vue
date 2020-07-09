@@ -3,6 +3,8 @@
     class="item"
     :class="{hoverable: link}">
 
+    <span class="date">{{formatted_date}}</span>
+
 
     <router-link
       v-if="link"
@@ -16,16 +18,6 @@
       v-else>
       {{item.content}}
     </span>
-
-    <span
-      class="proposal_count"
-      v-if="item.proposals">
-      解決提案：{{item.proposals.length}}
-    </span>
-
-
-
-
 
     <button
       type="button"
@@ -45,6 +37,14 @@
       <thumb-down-icon />
     </button>
 
+    <router-link
+      class="proposal_count"
+      v-if="link && item.proposals"
+      :to="{ name: 'monku', query: {id: item._id} }">
+      解決提案：{{item.proposals.length}}
+    </router-link>
+
+    <!-- Delete button for admin -->
     <button
       v-if="user_is_admin"
       type="button"
@@ -96,6 +96,17 @@ export default {
         return !!this.$store.state.user.properties.isAdmin
       }
       else return false
+    },
+    formatted_date(){
+      let options = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+
+      }
+
+      let timestamp_date = new Date(this.item.timestamp)
+      return timestamp_date.toLocaleString('ja-JP', options)
     }
   }
 }
@@ -104,10 +115,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .item{
+  background-color: white;
   display: flex;
   align-items: center;
   padding: 0.5em;
-  margin: 0.5em 0;
+  margin: 1em 0;
   border: 1px solid #dddddd;
 }
 
@@ -115,12 +127,15 @@ export default {
   margin-right: 0.5em;
 }
 
+a {
+  color: currentCOlor;
+  text-decoration: none;
+}
+
 .monku_content {
   display: flex;
   align-items: center;
   flex-grow: 1;
-  color: currentCOlor;
-  text-decoration: none;
 }
 
 .likes {
@@ -158,6 +173,9 @@ button {
   cursor: pointer;
 }
 
-
+.date {
+  color: #666666;
+  font-size: 75%;
+}
 
 </style>
