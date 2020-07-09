@@ -106,7 +106,9 @@ export default {
   margin-top: 1em;
 }
 
-
+.flip-list-move {
+  transition: transform 1s;
+}
 
 
 </style>
