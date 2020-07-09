@@ -12,15 +12,15 @@
     </router-link>
 
     <span
-      class="proposal_count"
-      v-if="item.proposals">
-      解決提案：{{item.proposals.length}}
-    </span>
-
-    <span
       class="monku_content"
       v-else>
       {{item.content}}
+    </span>
+
+    <span
+      class="proposal_count"
+      v-if="item.proposals">
+      解決提案：{{item.proposals.length}}
     </span>
 
 
