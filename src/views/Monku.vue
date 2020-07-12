@@ -2,6 +2,11 @@
   <div class="home">
     <h1>文句</h1>
 
+
+    <div class="loader_container" v-if="loading">
+      <Loader>Loading</Loader>
+    </div>
+
     <template v-if="monku">
 
       <Item
@@ -38,16 +43,20 @@
 // @ is an alias to /src
 
 import Item from '@/components/Item.vue'
+import Loader from '@moreillon/vue_loader'
 
 export default {
   name: 'Monku',
   components: {
     Item,
+    Loader,
+
   },
   data(){
     return {
       monku: null,
       proposal_content: '',
+      loading: false,
     }
   },
   mounted(){
@@ -72,12 +81,16 @@ export default {
       .catch(error => console.log(error))
     },
     get_monku(){
+      this.loading = true
+
       let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${this.$route.query.id}`
       this.axios.get(url)
       .then(response => {
         this.monku = response.data[0]
       })
       .catch(error => console.log(error))
+      .finally(() => this.loading = false)
+
     },
     get_proposals(){
       let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${this.$route.query.id}/proposals`
@@ -188,5 +201,10 @@ export default {
 }
 .flip-list-move {
   transition: transform 1s;
+}
+
+.loader_container {
+  text-align: center;
+  font-size: 200%;
 }
 </style>

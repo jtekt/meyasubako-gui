@@ -14,11 +14,16 @@
     <p>
       Sorting:
       <button type="button" :class="{active: sorting ==='timestamp' }" @click="sorting='timestamp'">Date</button>
-      <button type="button" :class="{active: sorting ==='likes' }" @click="sorting='likes'">Likes</button>
+      <button typ
+      e="button" :class="{active: sorting ==='likes' }" @click="sorting='likes'">Likes</button>
     </p>
-    <div class="monku_wrapper">
-      <transition-group name="flip-list" tag="div">
 
+    <div class="loader_container" v-if="loading">
+      <Loader>Loading items</Loader>
+    </div>
+
+    <div class="monku_wrapper" v-else>
+      <transition-group name="flip-list" tag="div">
         <Item
           link
           v-for="complaint in sorted_complaints"
@@ -26,22 +31,22 @@
           v-bind:item="complaint"
           @vote="vote($event)"
           @deleteItem="delete_monku($event)"/>
-
       </transition-group>
-
     </div>
+
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import Item from '@/components/Item.vue'
-
+import Loader from '@moreillon/vue_loader'
 
 export default {
   name: 'Home',
   components: {
     Item,
+    Loader,
   },
   data(){
     return {
@@ -49,6 +54,7 @@ export default {
       complaints: [],
       sorting: 'likes',
       ordering: 1,
+      loading: false,
     }
   },
   mounted(){
@@ -67,15 +73,16 @@ export default {
       .catch(error => console.log(error))
     },
     get_monku(){
+      this.loading = true
       this.axios.get(`${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku`)
       .then(response => {
         this.complaints.splice(0,this.complaints.length)
         response.data.forEach((complaint) => {
           this.complaints.push(complaint)
         })
-
       })
       .catch(error => console.log(error))
+      .finally(() => this.loading = false)
     },
     vote(data){
       let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${data.id}/vote`
@@ -133,6 +140,12 @@ button {
 button.active {
   background: #c00000;
   color: white;
+}
+
+.loader_container {
+  text-align: center;
+  font-size: 200%;
+
 }
 
 </style>
