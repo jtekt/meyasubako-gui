@@ -11,11 +11,23 @@
 
     <h2>ある文句</h2>
     <p>文句をクリックすると対策の提案書けるようになります</p>
+
     <p>
-      Sorting:
-      <button type="button" :class="{active: sorting ==='timestamp' }" @click="sorting='timestamp'">Date</button>
-      <button typ
-      e="button" :class="{active: sorting ==='likes' }" @click="sorting='likes'">Likes</button>
+
+      <span v-if="complaints.length > 0">{{complaints.length}} Items, sorting: </span>
+
+      <button
+        type="button"
+        :class="{active: sorting ==='timestamp' }"
+        @click="sorting='timestamp'">
+        日付 / Date
+      </button>
+      <button
+        type="button"
+        :class="{active: sorting ==='likes' }"
+        @click="sorting='likes'">
+        いいね / Likes
+      </button>
     </p>
 
     <div class="loader_container" v-if="loading">
@@ -132,6 +144,8 @@ export default {
 }
 
 button {
+  margin: 0 0.25em;
+  outline: none;
   border: 2px solid #c00000;
   background: white;
   color: #c00000;
