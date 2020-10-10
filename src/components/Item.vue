@@ -144,6 +144,7 @@ a {
 }
 
 button {
+  font-size: 150%;
   border: none;
   outline: none;
   background: transparent;

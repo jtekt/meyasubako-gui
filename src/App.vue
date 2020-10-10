@@ -40,6 +40,9 @@ export default {
 
 <style>
 
+.material-design-icon__svg {
+  bottom: 0 !important;
+}
 body {
   margin: 0;
   color: #444444;

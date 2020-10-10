@@ -12,21 +12,26 @@
     <h2>ある文句</h2>
     <p>文句をクリックすると対策の提案書けるようになります</p>
 
-    <p>
+    <p class="toolbar">
+      <span v-if="complaints.length > 0">{{complaints.length}} Items</span>
 
-      <span v-if="complaints.length > 0">{{complaints.length}} Items, sorting: </span>
+      <span class="spacer"/>
+
+      <span>並べ替え / Sorting: </span>
+
 
       <button
         type="button"
         :class="{active: sorting ==='timestamp' }"
         @click="sorting='timestamp'">
-        日付 / Date
+        <CalendarIcon />
       </button>
+
       <button
         type="button"
         :class="{active: sorting ==='likes' }"
         @click="sorting='likes'">
-        いいね / Likes
+        <ThumbUpIcon />
       </button>
     </p>
 
@@ -54,11 +59,17 @@
 import Item from '@/components/Item.vue'
 import Loader from '@moreillon/vue_loader'
 
+import ThumbUpIcon from 'vue-material-design-icons/ThumbUp.vue'
+import CalendarIcon from 'vue-material-design-icons/Calendar.vue'
+
+
 export default {
   name: 'Home',
   components: {
     Item,
     Loader,
+    ThumbUpIcon,
+    CalendarIcon,
   },
   data(){
     return {
@@ -144,21 +155,32 @@ export default {
 }
 
 button {
+  cursor: pointer;
   margin: 0 0.25em;
   outline: none;
-  border: 2px solid #c00000;
+  border: none;
   background: white;
-  color: #c00000;
+  color: currentcolor;
 }
 
 button.active {
-  background: #c00000;
-  color: white;
+  color: #c00000;
 }
 
 .loader_container {
   text-align: center;
   font-size: 200%;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+}
+.toolbar button {
+  font-size: 120%;
+}
+.spacer {
+  flex-grow: 1;
 }
 
 </style>
