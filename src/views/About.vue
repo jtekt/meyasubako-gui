@@ -1,8 +1,7 @@
 <template>
   <div>
     <h1>About</h1>
-    <h2>Bug report</h2>
-    <p>If you find a bug or a problem, please report it on <a href="http://10.115.1.14/moreillon_k8s/mendokusai/-/issues">GitLab</a></p>
+    <p>Version {{version}}</p>
 
     <h2>Technologies used</h2>
     <p>This application is built using the following open-source technologies:</p>
@@ -17,24 +16,20 @@
         </label>
       </div>
     </div>
-    <h2>Source code</h2>
-    <p>The source code for this system is available on the company's internal GitLab:</p>
-    <ul>
-      <li><a href="http://10.115.1.14/moreillon_k8s/mendokusai">Back-end</a></li>
-      <li><a href="http://10.115.1.14/moreillon_k8s/mendokusai_front">Front-end</a></li>
-    </ul>
+
 
   </div>
 </template>
 
 <script>
 
-// UI elements
+import pjson from '@/../package.json'
 
 export default {
   name: 'About',
   data () {
     return {
+      version: pjson.version,
       technologies: [
         {
           label: 'Docker',

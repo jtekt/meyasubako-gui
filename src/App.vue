@@ -4,8 +4,16 @@
     <AppTemplate
       applicationName="「それは面倒くさいな！」">
       <template v-slot:navigation>
-        <router-link :to="{ name: 'Home' }">Home</router-link>
-        <router-link :to="{ name: 'about' }">About</router-link>
+        <router-link :to="{ name: 'Home' }">
+          <HomeIcon />
+          <span>Home</span>
+
+        </router-link>
+        <router-link :to="{ name: 'about' }">
+          <InformationOutlineIcon />
+          <span>About</span>
+
+        </router-link>
       </template>
     </AppTemplate>
 
@@ -14,22 +22,41 @@
 
 <script>
 import AppTemplate from '@moreillon/vue_application_template_flex'
+import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline.vue'
+import HomeIcon from 'vue-material-design-icons/Home.vue'
 
 export default {
   name: 'App',
   components: {
-    AppTemplate
+    AppTemplate,
+    InformationOutlineIcon,
+    HomeIcon
   },
   mounted(){
-    var jwt = this.$cookies.get("jwt")
-    if(jwt) {
-      this.axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`
-      this.axios.get(`${process.env.VUE_APP_AUTHENTICATION_MANAGER_URL}/whoami`)
-      .then(response => { this.$store.commit('set_user', response.data) })
-      .catch( () => {})
-    }
+    this.identify_if_logged_in()
+    this.get_votes_from_cookies()
 
   },
+  methods: {
+    identify_if_logged_in(){
+      const jwt = this.$cookies.get("jwt")
+      if(jwt) {
+        this.axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`
+        this.axios.get(`${process.env.VUE_APP_AUTHENTICATION_MANAGER_URL}/whoami`)
+        .then(response => { this.$store.commit('set_user', response.data) })
+        .catch( () => {})
+      }
+    },
+    get_votes_from_cookies(){
+      const votes_stringified = this.$cookies.get("complaints_votes")
+      if(!votes_stringified) return
+      const votes = JSON.parse(votes_stringified)
+      votes.forEach((vote) => {
+        this.$store.commit('add_vote',vote)
+      })
+
+    }
+  }
 
 
 }
