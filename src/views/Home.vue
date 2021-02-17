@@ -3,7 +3,7 @@
     <h1>無駄削減</h1>
     <p>無駄削減のために、効率が悪い手続きについての文句をここにリストアップしましょう！</p>
 
-    <h2>新しい文句</h2>
+    <h2>文句追加</h2>
     <form class="" @submit.prevent="submit()">
       <input type="text" v-model="monku_content" placeholder="文句内容">
       <input type="submit">
