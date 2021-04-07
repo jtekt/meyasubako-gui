@@ -83,7 +83,7 @@ export default {
     get_monku(){
       this.loading = true
 
-      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${this.$route.query.id}`
+      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${this.$route.params.monku_id}`
       this.axios.get(url)
       .then(response => {
         this.monku = response.data[0]
@@ -93,7 +93,7 @@ export default {
 
     },
     get_proposals(){
-      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${this.$route.query.id}/proposals`
+      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${this.$route.params.monku_id}/proposals`
 
       this.axios.get(url)
       .then(response => {
@@ -103,7 +103,7 @@ export default {
       .catch(error => console.log(error))
     },
     vote_monku(data){
-      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${this.$route.query.id}/vote`
+      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${this.$route.params.monku_id}/vote`
 
       this.axios.post(url, {
         vote: data.vote,
@@ -114,14 +114,13 @@ export default {
       .catch(error => console.log(error))
     },
     vote_proposal(data){
-      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/proposals/${data.id}/vote`
+      const url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/proposals/${data.id}/vote`
 
       this.axios.post(url, {
         vote: data.vote,
       })
       .then((response) => {
-        let found_proposal = this.monku.proposals.find(proposal => { return proposal._id === response.data.value._id
-        })
+        const found_proposal = this.monku.proposals.find(proposal => proposal._id === response.data.value._id)
 
         if(found_proposal) found_proposal.likes = response.data.value.likes
       })

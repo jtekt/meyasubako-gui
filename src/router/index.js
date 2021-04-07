@@ -15,22 +15,12 @@ Vue.use(VueRouter)
     name: 'about',
     component: () => import('../views/About.vue')
   },
-
   {
-    path: '/monku',
+    path: '/monku/:monku_id',
     name: 'monku',
     component: () => import('../views/Monku.vue')
   },
-  {
-    path: '/new_monku',
-    name: 'new_monku',
-    component: () => import('../views/NewMonku.vue')
-  },
-  {
-    path: '/new_proposal',
-    name: 'new_proposal',
-    component: () => import('../views/NewProposal.vue')
-  },
+
 ]
 
 const router = new VueRouter({

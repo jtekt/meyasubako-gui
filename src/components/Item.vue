@@ -8,7 +8,7 @@
     <router-link
       v-if="link"
       class="monku_content"
-      :to="{ name: 'monku', query: {id: item._id} }">
+      :to="{ name: 'monku', params: {monku_id: item._id} }">
       {{item.content}}
     </router-link>
 
@@ -39,7 +39,7 @@
     <router-link
       class="proposal_count"
       v-if="link && item.proposals"
-      :to="{ name: 'monku', query: {id: item._id} }">
+      :to="{ name: 'monku', params: {monku_id: item._id} }">
       解決提案：{{item.proposals.length}}
     </router-link>
 
