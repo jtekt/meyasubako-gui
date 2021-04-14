@@ -67,7 +67,7 @@ export default {
     submit_proposal(){
       if(!confirm('提案を登録しますか？')) return
 
-      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${this.monku._id}/proposals`
+      let url = `${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/monku/${this.monku._id}/proposals`
       this.axios.post(url, {
         content: this.proposal_content,
       })
@@ -83,7 +83,7 @@ export default {
     get_monku(){
       this.loading = true
 
-      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${this.$route.params.monku_id}`
+      let url = `${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/monku/${this.$route.params.monku_id}`
       this.axios.get(url)
       .then(response => {
         this.monku = response.data[0]
@@ -93,7 +93,7 @@ export default {
 
     },
     get_proposals(){
-      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${this.$route.params.monku_id}/proposals`
+      let url = `${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/monku/${this.$route.params.monku_id}/proposals`
 
       this.axios.get(url)
       .then(response => {
@@ -103,7 +103,7 @@ export default {
       .catch(error => console.log(error))
     },
     vote_monku(data){
-      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${this.$route.params.monku_id}/vote`
+      let url = `${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/monku/${this.$route.params.monku_id}/vote`
 
       this.axios.post(url, {
         vote: data.vote,
@@ -114,7 +114,7 @@ export default {
       .catch(error => console.log(error))
     },
     vote_proposal(data){
-      const url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/proposals/${data.id}/vote`
+      const url = `${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/proposals/${data.id}/vote`
 
       this.axios.post(url, {
         vote: data.vote,
@@ -128,7 +128,7 @@ export default {
     },
     delete_monku(id){
       if(confirm(`ホンマに？`)){
-        let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${id}`
+        let url = `${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/monku/${id}`
         this.axios.delete(url)
         .then(() => {
           this.$router.push('/')
@@ -138,7 +138,7 @@ export default {
     },
     delete_proposal(id){
       if(confirm(`ホンマに？`)){
-        let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/proposals/${id}`
+        let url = `${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/proposals/${id}`
         this.axios.delete(url)
         .then(() => {
           // Reload data

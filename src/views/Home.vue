@@ -84,7 +84,7 @@ export default {
   methods: {
     submit(){
       if(!confirm('文句を登録しますか？')) return
-      this.axios.post(`${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku`, {
+      this.axios.post(`${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/monku`, {
         content: this.monku_content
       })
       .then(() => {
@@ -95,7 +95,7 @@ export default {
     },
     get_monku(){
       this.loading = true
-      this.axios.get(`${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku`)
+      this.axios.get(`${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/monku`)
       .then(response => {
         this.complaints.splice(0,this.complaints.length)
         response.data.forEach((complaint) => {
@@ -106,7 +106,7 @@ export default {
       .finally(() => this.loading = false)
     },
     vote(data){
-      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${data.id}/vote`
+      let url = `${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/monku/${data.id}/vote`
       this.axios.post(url, {
         vote: data.vote,
       })
@@ -120,7 +120,7 @@ export default {
     },
     delete_monku(id){
       if(confirm(`ホンマに？`)){
-        let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${id}`
+        let url = `${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/monku/${id}`
         this.axios.delete(url)
         .then(() => {this.get_monku()})
         .catch(error => console.log(error))

@@ -21,6 +21,9 @@ spec:
         envFrom:
         - secretRef:
            name: environment-variables
+        env:
+        - name: VUE_APP_FEEDBACK_GATHERING_API_URL
+          value: http://172.16.98.151:30654
 ---
 apiVersion: v1
 kind: Service
