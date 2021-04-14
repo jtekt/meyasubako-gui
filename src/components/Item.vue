@@ -79,6 +79,7 @@ export default {
       this.axios.post(url, { vote })
       .then( () => {
         this.$store.commit('add_vote', {id, vote})
+        this.$cookies.set("votes", JSON.stringify(this.$store.state.votes))
         this.item.likes += vote
       })
       .catch(error => console.log(error))
