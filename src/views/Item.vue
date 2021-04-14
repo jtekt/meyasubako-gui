@@ -103,7 +103,7 @@ export default {
     },
     delete_subitem(id){
       if(!confirm(`ホンマに？`)) return
-      const url = `${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/item/${id}`
+      const url = `${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/items/${id}`
       this.axios.delete(url)
       .then(() => { this.get_subitems() })
       .catch(error => console.log(error))
