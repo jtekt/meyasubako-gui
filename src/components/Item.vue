@@ -85,7 +85,7 @@ export default {
       this.$emit('vote', {id, vote})
 
       this.$store.commit('add_vote', {id, vote})
-      this.$cookies.set("complaints_votes", JSON.stringify(this.$store.state.votes))
+      this.$cookies.set("votes", JSON.stringify(this.$store.state.votes))
     },
     delete_item(id){
       this.$emit('deleteItem', id)

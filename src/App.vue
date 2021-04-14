@@ -2,7 +2,7 @@
   <div id="app">
 
     <AppTemplate
-      applicationName="「それは面倒くさいな！」">
+      applicationName="Feedback gathering system">
       <template v-slot:navigation>
         <router-link :to="{ name: 'Home' }">
           <HomeIcon />
@@ -48,7 +48,7 @@ export default {
       }
     },
     get_votes_from_cookies(){
-      const votes_stringified = this.$cookies.get("complaints_votes")
+      const votes_stringified = this.$cookies.get("votes")
       if(!votes_stringified) return
       const votes = JSON.parse(votes_stringified)
       votes.forEach((vote) => {
