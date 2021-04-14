@@ -16,9 +16,9 @@ Vue.use(VueRouter)
     component: () => import('../views/About.vue')
   },
   {
-    path: '/monku/:monku_id',
-    name: 'monku',
-    component: () => import('../views/Monku.vue')
+    path: '/items/:item_id',
+    name: 'item',
+    component: () => import('../views/Item.vue')
   },
 
 ]
