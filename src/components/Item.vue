@@ -78,6 +78,7 @@ export default {
       const url = `${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/items/${id}/vote`
       this.axios.post(url, { vote })
       .then( () => {
+        this.$store.commit('add_vote', {id, vote})
         this.item.likes += vote
       })
       .catch(error => console.log(error))
@@ -107,7 +108,7 @@ export default {
     user_vote(){
       const found_vote = this.$store.state.votes.find(stored_vote => {return stored_vote.id === this.item._id})
       if(!found_vote) return null
-      return found_vote.vote && false
+      return found_vote.vote
     }
   }
 }

@@ -40,12 +40,11 @@ export default {
   methods: {
     identify_if_logged_in(){
       const jwt = this.$cookies.get("jwt")
-      if(jwt) {
-        this.axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`
-        this.axios.get(`${process.env.VUE_APP_AUTHENTICATION_MANAGER_URL}/whoami`)
-        .then(response => { this.$store.commit('set_user', response.data) })
-        .catch( () => {})
-      }
+      if(!jwt) return
+      this.axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`
+      this.axios.get(`${process.env.VUE_APP_AUTHENTICATION_MANAGER_URL}/whoami`)
+      .then(response => { this.$store.commit('set_user', response.data) })
+      .catch( () => {})
     },
     get_votes_from_cookies(){
       const votes_stringified = this.$cookies.get("votes")
