@@ -3,7 +3,7 @@ stages:
   - deployment
 
 variables:
-  APPLICATION_NAME: mendokusai-front
+  APPLICATION_NAME: feedback-gathering-system-front
 
 containerization:
   stage: containerization
