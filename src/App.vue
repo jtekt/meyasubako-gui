@@ -48,7 +48,6 @@ export default {
     },
     get_votes_from_cookies(){
       const votes_stringified = this.$cookies.get("votes")
-      console.log(votes_stringified)
       if(!votes_stringified) return
       const votes = JSON.parse(votes_stringified)
       votes.forEach((vote) => {

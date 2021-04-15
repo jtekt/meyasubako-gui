@@ -87,22 +87,17 @@ export default {
       const url = `${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/items`
       this.axios.post(url, { content: this.content })
       .then(() => {
-        this.item_content = ''
+        this.content = ''
         this.get_items()
       })
-      .catch(error => console.log(error))
+      .catch(error => console.error(error))
     },
     get_items(){
       this.loading = true
       const url = `${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/items`
       this.axios.get(url)
-      .then(response => {
-        this.items.splice(0,this.items.length)
-        response.data.forEach((item) => {
-          this.items.push(item)
-        })
-      })
-      .catch(error => console.log(error))
+      .then(({data}) => { this.items = data })
+      .catch(error => console.error(error))
       .finally(() => this.loading = false)
     },
 
@@ -110,8 +105,8 @@ export default {
       if(!confirm(`ホンマに？`)) return
       const url = `${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/items/${id}`
       this.axios.delete(url)
-      .then(() => {this.get_items()})
-      .catch(error => console.log(error))
+      .then(() => { this.get_items()} )
+      .catch(error => console.error(error))
     },
   },
   computed: {

@@ -75,7 +75,7 @@ export default {
         // Reload data
         this.get_subitems()
       })
-      .catch(error => console.log(error))
+      .catch(error => console.error(error))
     },
     get_item(){
       this.loading = true
@@ -83,7 +83,7 @@ export default {
       let url = `${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/items/${this.$route.params.item_id}`
       this.axios.get(url)
       .then(({data}) => { this.item = data })
-      .catch(error => console.log(error))
+      .catch(error => console.error(error))
       .finally(() => this.loading = false)
 
     },
@@ -92,21 +92,21 @@ export default {
 
       this.axios.get(url)
       .then(({data}) => { this.subitems = data })
-      .catch(error => console.log(error))
+      .catch(error => console.error(error))
     },
     delete_item(id){
       if(!confirm(`ホンマに？`)) return
       const url = `${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/item/${id}`
       this.axios.delete(url)
       .then(() => { this.$router.push('/') })
-      .catch(error => console.log(error))
+      .catch(error => console.error(error))
     },
     delete_subitem(id){
       if(!confirm(`ホンマに？`)) return
       const url = `${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/items/${id}`
       this.axios.delete(url)
       .then(() => { this.get_subitems() })
-      .catch(error => console.log(error))
+      .catch(error => console.error(error))
     },
 
 

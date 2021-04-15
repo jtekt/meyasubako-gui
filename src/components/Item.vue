@@ -36,6 +36,8 @@
       <thumb-down-icon />
     </button>
 
+    <span v-if="item.children && link">{{item.children.length}} Comments</span>
+
     <!-- Delete button for admin -->
     <button
       v-if="user_is_admin"
@@ -82,7 +84,7 @@ export default {
         this.$cookies.set("votes", JSON.stringify(this.$store.state.votes))
         this.item.likes += vote
       })
-      .catch(error => console.log(error))
+      .catch(error => console.error(error))
     },
     delete_item(id){
       this.$emit('deleteItem', id)
