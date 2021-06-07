@@ -75,7 +75,7 @@ export default {
     return {
       monku_content: '',
       complaints: [],
-      sorting: 'timestamp',
+      sorting: 'likes',
       ordering: 1,
       loading: false,
     }
