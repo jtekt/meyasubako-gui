@@ -2,7 +2,7 @@
   <div id="app">
 
     <AppTemplate
-      applicationName="「それは面倒くさいな！」">
+      applicationName="目安箱">
       <template v-slot:navigation>
         <router-link :to="{ name: 'Home' }">
           <HomeIcon />
