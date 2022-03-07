@@ -1,16 +1,16 @@
 <template>
   <div class="home">
     <h1>無駄削減</h1>
-    <p>無駄削減のために、効率が悪い手続きについての文句をここにリストアップしましょう！</p>
+    <p>業務効率改善のために、日常業務にある改善できそうなことをここにリストアップしましょう！</p>
 
-    <h2>文句追加</h2>
+    <h2>アイテム追加</h2>
     <form class="" @submit.prevent="submit()">
       <input type="text" v-model="monku_content" placeholder="文句内容">
       <input type="submit">
     </form>
 
-    <h2>ある文句</h2>
-    <p>文句をクリックすると対策の提案書けるようになります</p>
+    <h2>あるアイテム</h2>
+    <p>アイテムをクリックすると対策の提案書けるようになります</p>
 
     <p class="toolbar">
       <span v-if="complaints.length > 0">{{complaints.length}} Items</span>

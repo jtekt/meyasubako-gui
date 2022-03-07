@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <h1>文句</h1>
+    <h1>アイテム</h1>
 
 
     <div class="loader_container" v-if="loading">
@@ -14,15 +14,15 @@
         @vote="vote_monku($event)"
         @deleteItem="delete_monku($event)"/>
 
-      <h2>解決提案</h2>
+      <h2>コメント</h2>
 
-      <h3>新しい提案</h3>
+      <h3>コメント追加</h3>
       <form class="" @submit.prevent="submit_proposal()">
         <input type="text" v-model="proposal_content" placeholder="提案内容">
         <input type="submit" >
       </form>
 
-      <h3>ある提案</h3>
+      <h3>今までのコメント</h3>
       <transition-group name="flip-list" tag="div">
         <Item
           v-for="proposal in sorted_proposals"
