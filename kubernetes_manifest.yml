@@ -17,7 +17,9 @@ spec:
         image: ${DOCKER_IMAGE}
         ports:
         - containerPort: 80
-        # Get environment variables from secret
+        env:
+        - name: VUE_APP_MENDOKUSAI_API_URL
+          value: 31040
         envFrom:
         - secretRef:
            name: environment-variables
