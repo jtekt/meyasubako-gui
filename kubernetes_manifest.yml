@@ -19,7 +19,7 @@ spec:
         - containerPort: 80
         env:
         - name: VUE_APP_MENDOKUSAI_API_URL
-          value: 31040
+          value: http://10.115.1.100:31040
         envFrom:
         - secretRef:
            name: environment-variables
