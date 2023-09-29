@@ -12,11 +12,7 @@
     </div>
 
     <template v-if="monku">
-      <Item
-        v-bind:item="monku"
-        @vote="vote_monku($event)"
-        @deleteItem="delete_monku($event)"
-      />
+      <Item v-bind:item="monku" @vote="vote_monku($event)" />
 
       <v-form class="" @submit.prevent="submit_proposal()">
         <v-row align="center">
@@ -38,10 +34,9 @@
       <transition-group name="flip-list" tag="div">
         <Item
           v-for="proposal in sorted_proposals"
-          v-bind:key="proposal._id"
-          v-bind:item="proposal"
+          :key="proposal._id"
+          :item="proposal"
           @vote="vote_proposal($event)"
-          @deleteItem="delete_proposal($event)"
         />
       </transition-group>
     </template>
@@ -49,8 +44,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
-
 import Item from "@/components/Item.vue"
 
 export default {
@@ -67,13 +60,12 @@ export default {
   },
   mounted() {
     this.get_monku()
-    //this.get_proposals()
   },
   methods: {
     submit_proposal() {
       if (!confirm("提案を登録しますか？")) return
 
-      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${this.monku._id}/proposals`
+      let url = `/monku/${this.monku._id}/proposals`
       this.axios
         .post(url, {
           content: this.proposal_content,
@@ -90,27 +82,18 @@ export default {
     get_monku() {
       this.loading = true
 
-      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${this.$route.params.monku_id}`
+      const url = `/monku/${this.$route.params.monku_id}`
       this.axios
         .get(url)
-        .then((response) => {
-          this.monku = response.data[0]
+        .then(({ data }) => {
+          this.monku = data[0]
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false))
     },
-    get_proposals() {
-      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${this.$route.params.monku_id}/proposals`
 
-      this.axios
-        .get(url)
-        .then((response) => {
-          console.log(response.data)
-        })
-        .catch((error) => console.log(error))
-    },
     vote_monku(data) {
-      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${this.$route.params.monku_id}/vote`
+      const url = `/monku/${this.$route.params.monku_id}/vote`
 
       this.axios
         .post(url, {
@@ -122,7 +105,7 @@ export default {
         .catch((error) => console.log(error))
     },
     vote_proposal(data) {
-      const url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/proposals/${data.id}/vote`
+      const url = `/proposals/${data.id}/vote`
 
       this.axios
         .post(url, {
@@ -137,35 +120,10 @@ export default {
         })
         .catch((error) => console.log(error))
     },
-    delete_monku(id) {
-      if (confirm(`ホンマに？`)) {
-        let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${id}`
-        this.axios
-          .delete(url)
-          .then(() => {
-            this.$router.push("/")
-          })
-          .catch((error) => console.log(error))
-      }
-    },
-    delete_proposal(id) {
-      if (confirm(`ホンマに？`)) {
-        let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/proposals/${id}`
-        this.axios
-          .delete(url)
-          .then(() => {
-            // Reload data
-            this.get_monku()
-          })
-          .catch((error) => console.log(error))
-      }
-    },
   },
   computed: {
     sorted_proposals() {
-      return this.monku.proposals.slice().sort((a, b) => {
-        return b.likes - a.likes
-      })
+      return this.monku.proposals.slice().sort((a, b) => b.likes - a.likes)
     },
     user_is_admin() {
       if (this.$store.state.user) {
@@ -177,42 +135,6 @@ export default {
 </script>
 
 <style scoped>
-.monku_wrapper {
-  margin-top: 1em;
-}
-.monku {
-  display: flex;
-  align-items: center;
-  padding: 0.5em;
-  margin: 0.5em 0;
-  border: 1px solid #dddddd;
-}
-
-.monku .likes {
-  padding-right: 0.5em;
-  border-right: 1px solid #dddddd;
-  margin-right: 0.5em;
-}
-
-.spacer {
-  flex-grow: 1;
-}
-
-.new_button_wrapper {
-  display: flex;
-  justify-content: center;
-}
-.new_button {
-  text-decoration: none;
-  color: currentColor;
-  padding: 0.5em;
-  border: 1px solid #444444;
-  border-radius: 0.5em;
-}
-.flip-list-move {
-  transition: transform 1s;
-}
-
 .loader_container {
   text-align: center;
   font-size: 200%;

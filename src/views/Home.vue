@@ -55,7 +55,6 @@
           :key="complaint._id"
           :item="complaint"
           @vote="vote($event)"
-          @deleteItem="delete_monku($event)"
         />
       </transition-group>
     </div>
@@ -124,17 +123,6 @@ export default {
           if (found_complaint) found_complaint.likes = response.data.value.likes
         })
         .catch((error) => console.log(error))
-    },
-    delete_monku(id) {
-      if (confirm(`ホンマに？`)) {
-        let url = `/monku/${id}`
-        this.axios
-          .delete(url)
-          .then(() => {
-            this.get_monku()
-          })
-          .catch((error) => console.log(error))
-      }
     },
   },
   computed: {

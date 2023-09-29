@@ -25,17 +25,13 @@ export default {
     }
   },
   mounted() {
-    this.get_votes_from_cookies()
+    this.getVotesFromLocalstorage()
   },
   methods: {
-    get_votes_from_cookies() {
-      const votes_stringified = this.$cookies.get("complaints_votes")
-      if (!votes_stringified) return
-      console.log(votes_stringified)
-      const votes = JSON.parse(votes_stringified)
-      votes.forEach((vote) => {
-        this.$store.commit("add_vote", vote)
-      })
+    getVotesFromLocalstorage() {
+      const votesString = localStorage.getItem("votes")
+      if (!votesString) return
+      this.$store.commit("setVotes", JSON.parse(votesString))
     },
   },
 }
