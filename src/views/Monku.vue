@@ -1,6 +1,11 @@
 <template>
-  <div class="home">
-    <h1>アイテム</h1>
+  <div>
+    <v-toolbar flat>
+      <v-btn :to="{ name: 'Home' }" exact text>
+        <v-icon left>mdi-arrow-left</v-icon>
+        <span>戻る</span>
+      </v-btn>
+    </v-toolbar>
 
     <div class="loader_container" v-if="loading">
       <v-progress-circular indeterminate />
@@ -13,15 +18,23 @@
         @deleteItem="delete_monku($event)"
       />
 
-      <h2>コメント</h2>
+      <v-form class="" @submit.prevent="submit_proposal()">
+        <v-row align="center">
+          <v-col>
+            <v-text-field
+              type="text"
+              v-model="proposal_content"
+              label="コメント"
+            />
+          </v-col>
+          <v-col cols="auto">
+            <v-btn type="submit" icon>
+              <v-icon>mdi-comment-plus</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-form>
 
-      <h3>コメント追加</h3>
-      <form class="" @submit.prevent="submit_proposal()">
-        <input type="text" v-model="proposal_content" placeholder="提案内容" />
-        <input type="submit" />
-      </form>
-
-      <h3>今までのコメント</h3>
       <transition-group name="flip-list" tag="div">
         <Item
           v-for="proposal in sorted_proposals"

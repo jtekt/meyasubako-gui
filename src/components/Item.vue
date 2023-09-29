@@ -8,47 +8,45 @@
         <v-col>
           {{ item.content }}
         </v-col>
-        <v-col cols="auto">
-          <v-row justify="space-between" align="center" dense>
+        <v-col cols="2">
+          <v-row justify="center" align="center" dense>
             <v-col cols="auto">
               <v-btn
                 icon
                 :class="{ voted: user_vote === 1 }"
                 :disabled="user_vote"
                 @click.stop="vote(item._id, 1)"
+                class="black--text"
               >
                 <v-icon>mdi-thumb-up</v-icon>
               </v-btn>
             </v-col>
-            <v-col cols="auto">{{ item.likes }}</v-col>
+            <v-col cols="auto" class="black--text">{{ item.likes }}</v-col>
             <v-col cols="auto">
               <v-btn
                 icon
                 :class="{ voted: user_vote === -1 }"
                 :disabled="user_vote"
                 @click.stop="vote(item._id, -1)"
+                class="black--text"
               >
                 <v-icon>mdi-thumb-down</v-icon>
               </v-btn>
             </v-col>
           </v-row>
         </v-col>
-        <!-- <v-col cols="1">
-          <v-icon>mdi-comment</v-icon> x
-          {{ item.proposals.length }}
-        </v-col> -->
+        <v-col cols="1" v-if="link">
+          <v-btn
+            :to="{ name: 'monku', params: { monku_id: item._id } }"
+            text
+            class="grey--text"
+          >
+            <v-icon left>mdi-comment</v-icon>
+            x {{ item.likes }}
+          </v-btn>
+        </v-col>
       </v-row>
     </v-card-text>
-    <span class="date"></span>
-
-    <span class="likes"></span>
-
-    <router-link
-      class="proposal_count"
-      v-if="link && item.proposals"
-      :to="{ name: 'monku', params: { monku_id: item._id } }"
-    >
-    </router-link>
   </v-card>
 </template>
 

@@ -25,27 +25,21 @@
 
     <v-toolbar flat>
       <span v-if="complaints.length > 0">
-        <v-icon>mdi-comment</v-icon> x {{ complaints.length }}
+        <v-icon>mdi-text-box-multiple</v-icon> x {{ complaints.length }}
       </span>
       <v-spacer></v-spacer>
-      <!-- TODO: button group with active -->
-      <v-btn
-        type="button"
-        icon
-        :class="{ active: sorting === 'timestamp' }"
-        @click="sorting = 'timestamp'"
-      >
-        <v-icon>mdi-calendar</v-icon>
-      </v-btn>
 
-      <v-btn
-        type="button"
-        icon
-        :class="{ active: sorting === 'likes' }"
-        @click="sorting = 'likes'"
-      >
-        <v-icon>mdi-thumb-up</v-icon>
-      </v-btn>
+      <span class="mr-2"> <v-icon>mdi-sort</v-icon> </span>
+
+      <v-btn-toggle v-model="sorting" mandatory>
+        <v-btn icon>
+          <v-icon>mdi-calendar</v-icon>
+        </v-btn>
+
+        <v-btn icon>
+          <v-icon>mdi-thumb-up</v-icon>
+        </v-btn>
+      </v-btn-toggle>
     </v-toolbar>
     <v-divider />
 
@@ -81,7 +75,7 @@ export default {
     return {
       monku_content: "",
       complaints: [],
-      sorting: "timestamp",
+      sorting: undefined,
       ordering: 1,
       loading: false,
     }
@@ -93,7 +87,7 @@ export default {
     submit() {
       if (!confirm("文句を登録しますか？")) return
       this.axios
-        .post(`${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku`, {
+        .post(`/monku`, {
           content: this.monku_content,
         })
         .then(() => {
@@ -105,7 +99,7 @@ export default {
     get_monku() {
       this.loading = true
       this.axios
-        .get(`${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku`)
+        .get(`/monku`)
         .then((response) => {
           this.complaints.splice(0, this.complaints.length)
           response.data.forEach((complaint) => {
@@ -116,15 +110,16 @@ export default {
         .finally(() => (this.loading = false))
     },
     vote(data) {
-      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${data.id}/vote`
+      const url = `/monku/${data.id}/vote`
+      const body = {
+        vote: data.vote,
+      }
       this.axios
-        .post(url, {
-          vote: data.vote,
-        })
+        .post(url, body)
         .then((response) => {
-          let found_complaint = this.complaints.find((complaint) => {
-            return complaint._id === response.data.value._id
-          })
+          let found_complaint = this.complaints.find(
+            (complaint) => complaint._id === response.data.value._id
+          )
 
           if (found_complaint) found_complaint.likes = response.data.value.likes
         })
@@ -132,7 +127,7 @@ export default {
     },
     delete_monku(id) {
       if (confirm(`ホンマに？`)) {
-        let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${id}`
+        let url = `/monku/${id}`
         this.axios
           .delete(url)
           .then(() => {
@@ -144,14 +139,12 @@ export default {
   },
   computed: {
     sorted_complaints() {
-      if (this.sorting === "timestamp") {
-        return this.complaints.slice().sort((a, b) => {
-          return new Date(b.timestamp) - new Date(a.timestamp)
-        })
+      if (this.sorting === 0) {
+        return this.complaints
+          .slice()
+          .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
       } else {
-        return this.complaints.slice().sort((a, b) => {
-          return b.likes - a.likes
-        })
+        return this.complaints.slice().sort((a, b) => b.likes - a.likes)
       }
     },
   },
