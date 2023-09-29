@@ -1,93 +1,44 @@
 <template>
-  <div id="app">
-    <AppTemplate applicationName="目安箱">
-      <template v-slot:navigation>
-        <router-link :to="{ name: 'Home' }">
-          <HomeIcon />
-          <span>Home</span>
-        </router-link>
-        <router-link :to="{ name: 'about' }">
-          <InformationOutlineIcon />
-          <span>About</span>
-        </router-link>
-      </template>
-    </AppTemplate>
-  </div>
+  <AppTemplate :options="options"> </AppTemplate>
 </template>
 
 <script>
-import AppTemplate from "@moreillon/vue_application_template_flex"
-import InformationOutlineIcon from "vue-material-design-icons/InformationOutline.vue"
-import HomeIcon from "vue-material-design-icons/Home.vue"
+import AppTemplate from "@moreillon/vue_application_template_vuetify"
+
+const { VUE_APP_HOMEPAGE_URL } = process.env
 
 export default {
   name: "App",
   components: {
     AppTemplate,
-    InformationOutlineIcon,
-    HomeIcon,
+  },
+  data() {
+    return {
+      options: {
+        title: "目安箱",
+        homepage_url: VUE_APP_HOMEPAGE_URL,
+        header_logo: require("@/assets/jtekt_logo_negative.jpg"),
+        authentication_logo: require("@/assets/jtekt_logo.jpg"),
+        colors: { app_bar: "#000" },
+        author: "Maxime Moreillon, JTEKT Corporation",
+      },
+    }
   },
   mounted() {
-    this.get_votes_from_cookies()
+    this.getVotesFromLocalstorage()
   },
   methods: {
-    get_votes_from_cookies() {
-      const votes_stringified = this.$cookies.get("complaints_votes")
-      if (!votes_stringified) return
-      const votes = JSON.parse(votes_stringified)
-      votes.forEach((vote) => {
-        this.$store.commit("add_vote", vote)
-      })
+    getVotesFromLocalstorage() {
+      const votesString = localStorage.getItem("votes")
+      if (!votesString) return
+      this.$store.commit("setVotes", JSON.parse(votesString))
     },
   },
 }
 </script>
 
 <style>
-.material-design-icon__svg {
-  bottom: 0 !important;
-}
-body {
-  margin: 0;
-  color: #444444;
-
-  font-family: Helvetica, Meiryo, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.flip-list-move {
-  transition: transform 1s;
-}
-
-.new_button_wrapper {
-  display: flex;
-  justify-content: center;
-}
-.new_button {
-  text-decoration: none;
-  color: currentColor;
-  padding: 0.5em;
-  border: 1px solid #444444;
-  border-radius: 0.5em;
-}
-
-form {
-  text-align: center;
-}
-
-form > * {
-  margin: 0.5em;
-  padding: 0.5em;
-}
-
-form input[type="text"] {
-  width: 75%;
-}
-
-form input[type="submit"] {
-  background-color: white;
-  border: 1px solid #444444;
-  cursor: pointer;
+.header_logo {
+  border-right: 1px solid white;
 }
 </style>
