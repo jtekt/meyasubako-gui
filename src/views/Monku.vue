@@ -86,6 +86,7 @@ export default {
       this.axios
         .get(url)
         .then(({ data }) => {
+          console.log(data)
           this.monku = data[0]
         })
         .catch((error) => console.log(error))
