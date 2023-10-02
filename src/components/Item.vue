@@ -42,7 +42,7 @@
             class="grey--text"
           >
             <v-icon left>mdi-comment</v-icon>
-            x {{ item.likes }}
+            x {{ item.proposals.length }}
           </v-btn>
         </v-col>
       </v-row>
@@ -85,6 +85,7 @@ export default {
       return timestamp_date.toLocaleString("ja-JP", options)
     },
     user_vote() {
+      console.log(this.item)
       const found_vote = this.$store.state.votes.find(
         (stored_vote) => stored_vote.id === this.item._id
       )
