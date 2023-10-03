@@ -1,6 +1,6 @@
 {
-  "name": "mendokusai_front",
-  "version": "1.0.1",
+  "name": "feedback_gathering_systemm_front",
+  "version": "1.0.3",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -10,7 +10,7 @@
   "dependencies": {
     "@moreillon/vue_application_template_flex": "^1.1.16",
     "@moreillon/vue_loader": "^1.0.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "dotenv": "^8.2.0",
     "vue": "^2.6.12",

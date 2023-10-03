@@ -1,19 +1,17 @@
 <template>
   <div class="home">
-    <h1>無駄削減</h1>
-    <p>無駄削減のために、効率が悪い手続きについての文句をここにリストアップしましょう！</p>
+    <h1>Items</h1>
 
-    <h2>文句追加</h2>
-    <form class="" @submit.prevent="submit()">
-      <input type="text" v-model="monku_content" placeholder="文句内容">
+    <h2>Add an item</h2>
+    <form class="" @submit.prevent="create_item()">
+      <input type="text" v-model="content" placeholder="Item">
       <input type="submit">
     </form>
 
-    <h2>ある文句</h2>
-    <p>文句をクリックすると対策の提案書けるようになります</p>
+    <h2>Existing Items</h2>
 
     <p class="toolbar">
-      <span v-if="complaints.length > 0">{{complaints.length}} Items</span>
+      <span v-if="items.length > 0">{{items.length}} Items</span>
 
       <span class="spacer"/>
 
@@ -22,8 +20,8 @@
 
       <button
         type="button"
-        :class="{active: sorting ==='timestamp' }"
-        @click="sorting='timestamp'">
+        :class="{active: sorting ==='date' }"
+        @click="sorting='date'">
         <CalendarIcon />
       </button>
 
@@ -39,15 +37,15 @@
       <Loader>Loading items</Loader>
     </div>
 
-    <div class="monku_wrapper" v-else>
+    <div class="item_wrapper" v-else>
       <transition-group name="flip-list" tag="div">
         <Item
           link
-          v-for="complaint in sorted_complaints"
-          v-bind:key="complaint._id"
-          v-bind:item="complaint"
+          v-for="item in sorted_items"
+          v-bind:key="item._id"
+          v-bind:item="item"
           @vote="vote($event)"
-          @deleteItem="delete_monku($event)"/>
+          @deleteItem="delete_item($event)"/>
       </transition-group>
     </div>
 
@@ -73,70 +71,52 @@ export default {
   },
   data(){
     return {
-      monku_content: '',
-      complaints: [],
-      sorting: 'timestamp',
+      content: '',
+      items: [],
+      sorting: 'date',
       ordering: 1,
       loading: false,
     }
   },
   mounted(){
-    this.get_monku()
+    this.get_items()
   },
   methods: {
-    submit(){
+    create_item(){
       if(!confirm('文句を登録しますか？')) return
-      this.axios.post(`${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku`, {
-        content: this.monku_content
-      })
+      const url = `${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/items`
+      this.axios.post(url, { content: this.content })
       .then(() => {
-        this.monku_content = ''
-        this.get_monku()
+        this.content = ''
+        this.get_items()
       })
-      .catch(error => console.log(error))
+      .catch(error => console.error(error))
     },
-    get_monku(){
+    get_items(){
       this.loading = true
-      this.axios.get(`${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku`)
-      .then(response => {
-        this.complaints.splice(0,this.complaints.length)
-        response.data.forEach((complaint) => {
-          this.complaints.push(complaint)
-        })
-      })
-      .catch(error => console.log(error))
+      const url = `${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/items`
+      this.axios.get(url)
+      .then(({data}) => { this.items = data })
+      .catch(error => console.error(error))
       .finally(() => this.loading = false)
     },
-    vote(data){
-      let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${data.id}/vote`
-      this.axios.post(url, {
-        vote: data.vote,
-      })
-      .then((response) => {
-        let found_complaint = this.complaints.find(complaint => { return complaint._id === response.data.value._id
-        })
 
-        if(found_complaint) found_complaint.likes = response.data.value.likes
-      })
-      .catch(error => console.log(error))
-    },
-    delete_monku(id){
-      if(confirm(`ホンマに？`)){
-        let url = `${process.env.VUE_APP_MENDOKUSAI_API_URL}/monku/${id}`
-        this.axios.delete(url)
-        .then(() => {this.get_monku()})
-        .catch(error => console.log(error))
-      }
+    delete_item(id){
+      if(!confirm(`ホンマに？`)) return
+      const url = `${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/items/${id}`
+      this.axios.delete(url)
+      .then(() => { this.get_items()} )
+      .catch(error => console.error(error))
     },
   },
   computed: {
-    sorted_complaints(){
+    sorted_items(){
 
-      if(this.sorting === 'timestamp'){
-        return this.complaints.slice().sort((a, b) => {return new Date (b.timestamp) - new Date (a.timestamp)})
+      if(this.sorting === 'date'){
+        return this.items.slice().sort((a, b) => {return new Date (b.date) - new Date (a.date)})
       }
       else {
-        return this.complaints.slice().sort((a, b) => {return b.likes - a.likes})
+        return this.items.slice().sort((a, b) => {return b.likes - a.likes})
       }
 
     }
@@ -146,7 +126,7 @@ export default {
 </script>
 
 <style scoped>
-.monku_wrapper {
+.item_wrapper {
   margin-top: 1em;
 }
 

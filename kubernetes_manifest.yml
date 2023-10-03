@@ -14,13 +14,16 @@ spec:
     spec:
       containers:
       - name: ${APPLICATION_NAME}
-        image: ${CONTAINER_REGISTRY}/${APPLICATION_NAME}
+        image: ${DOCKER_IMAGE}
         ports:
         - containerPort: 80
         # Get environment variables from secret
         envFrom:
         - secretRef:
            name: environment-variables
+        env:
+        - name: VUE_APP_FEEDBACK_GATHERING_API_URL
+          value: http://172.16.98.151:30654
 ---
 apiVersion: v1
 kind: Service
@@ -29,7 +32,7 @@ metadata:
 spec:
   ports:
   - port: 80
-    nodePort: 30555
+    nodePort: ${NODEPORT_PORT}
   selector:
     app: ${APPLICATION_NAME}
   type: NodePort

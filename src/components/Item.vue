@@ -7,13 +7,13 @@
 
     <router-link
       v-if="link"
-      class="monku_content"
-      :to="{ name: 'monku', params: {monku_id: item._id} }">
+      class="item_content"
+      :to="{ name: 'item', params: {item_id: item._id} }">
       {{item.content}}
     </router-link>
 
     <span
-      class="monku_content"
+      class="item_content"
       v-else>
       {{item.content}}
     </span>
@@ -22,7 +22,7 @@
       type="button"
       :class="{voted: user_vote === 1}"
       :disabled="user_vote"
-      @click.stop="vote(item._id, 1)">
+      @click.stop="vote_local(1)">
       <thumb-up-icon />
     </button>
 
@@ -32,16 +32,11 @@
       type="button"
       :class="{voted: user_vote === -1}"
       :disabled="user_vote"
-      @click.stop="vote(item._id, -1)">
+      @click.stop="vote_local(-1)">
       <thumb-down-icon />
     </button>
 
-    <router-link
-      class="proposal_count"
-      v-if="link && item.proposals"
-      :to="{ name: 'monku', params: {monku_id: item._id} }">
-      解決提案：{{item.proposals.length}}
-    </router-link>
+    <span v-if="item.children && link">{{item.children.length}} Comments</span>
 
     <!-- Delete button for admin -->
     <button
@@ -80,12 +75,16 @@ export default {
     DeleteIcon
   },
   methods: {
-    vote(id, vote){
-      this.voted = vote
-      this.$emit('vote', {id, vote})
-
-      this.$store.commit('add_vote', {id, vote})
-      this.$cookies.set("complaints_votes", JSON.stringify(this.$store.state.votes))
+    vote_local(vote){
+      const id = this.item._id
+      const url = `${process.env.VUE_APP_FEEDBACK_GATHERING_API_URL}/items/${id}/vote`
+      this.axios.post(url, { vote })
+      .then( () => {
+        this.$store.commit('add_vote', {id, vote})
+        this.$cookies.set("votes", JSON.stringify(this.$store.state.votes))
+        this.item.likes += vote
+      })
+      .catch(error => console.error(error))
     },
     delete_item(id){
       this.$emit('deleteItem', id)
@@ -99,15 +98,15 @@ export default {
       else return false
     },
     formatted_date(){
-      let options = {
+      const options = {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit'
 
       }
 
-      let timestamp_date = new Date(this.item.timestamp)
-      return timestamp_date.toLocaleString('ja-JP', options)
+      const date_date = new Date(this.item.date)
+      return date_date.toLocaleString('ja-JP', options)
     },
     user_vote(){
       const found_vote = this.$store.state.votes.find(stored_vote => {return stored_vote.id === this.item._id})
@@ -138,7 +137,7 @@ a {
   text-decoration: none;
 }
 
-.monku_content {
+.item_content {
   display: flex;
   align-items: center;
   flex-grow: 1;
