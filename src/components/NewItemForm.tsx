@@ -26,7 +26,7 @@ export default () => {
         placeholder="New item"
         class="input w-full max-w-xs flex-grow"
       />
-      <button class="btn" type="submit">
+      <button class="btn btn-primary" type="submit">
         <IoSend />
       </button>
     </form>

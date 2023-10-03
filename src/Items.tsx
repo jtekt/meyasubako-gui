@@ -1,6 +1,10 @@
 import { createSignal, onMount, For, type Component } from "solid-js"
-import { FaRegularThumbsUp, FaRegularThumbsDown } from "solid-icons/fa"
 import NewItemForm from "./components/NewItemForm"
+import VoteControls from "./components/VoteControls"
+import VoteButton from "./components/VoteButton"
+
+import { A } from "@solidjs/router"
+
 export default () => {
   const [items, setItems] = createSignal([])
 
@@ -18,9 +22,17 @@ export default () => {
       day: "2-digit",
     })
 
-  onMount(async () => {
-    await fetchItems()
+  onMount(() => {
+    fetchItems()
   })
+
+  const handleUpdate = (i: any) => {
+    const itemsCopy = items().slice()
+    const foundIndex = itemsCopy.findIndex(({ id }: any) => id === i.id)
+    console.log(i)
+    itemsCopy.splice(foundIndex, 1, i)
+    setItems(itemsCopy)
+  }
 
   return (
     <div>
@@ -42,16 +54,22 @@ export default () => {
                   <tr>
                     <td>{formatDate(item.time)}</td>
                     <td>
-                      <a href="/items/1">{item.content}</a>
+                      <A href={`/items/${item.id}`}>{item.content}</A>
                     </td>
-                    <td class="flex items-center gap-2">
-                      <button class="btn">
-                        <FaRegularThumbsUp />
-                      </button>
-                      <span>{item.likes}</span>
-                      <button class="btn">
-                        <FaRegularThumbsDown />
-                      </button>
+                    <td class="flex items-center gap-2 ">
+                      <VoteButton
+                        item={item}
+                        onUpdate={handleUpdate}
+                        type="like"
+                      />
+                      <span class="basis-10 text-center text-lg">
+                        {item.likes}
+                      </span>
+                      <VoteButton
+                        item={item}
+                        onUpdate={handleUpdate}
+                        type="dislike"
+                      />
                     </td>
                     <td>{item.comments.length}</td>
                   </tr>
