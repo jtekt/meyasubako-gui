@@ -1,11 +1,11 @@
 import { createSignal, onMount, For, type Component } from "solid-js"
 import { FaRegularThumbsUp, FaRegularThumbsDown } from "solid-icons/fa"
-
+import NewItemForm from "./components/NewItemForm"
 export default () => {
   const [items, setItems] = createSignal([])
 
   const fetchItems = async () => {
-    const url = "http://172.16.98.151:3001/items"
+    const url = "http://172.16.98.151:7070/items"
     const response = await fetch(url)
     const { items } = await response.json()
     setItems(items)
@@ -24,10 +24,8 @@ export default () => {
 
   return (
     <div>
-      <header class="navbar bg-base-100">
-        <a class="btn btn-ghost normal-case text-xl">Mendokusai</a>
-      </header>
       <main>
+        <NewItemForm />
         <div class="overflow-x-auto">
           <table class="table">
             <thead>
