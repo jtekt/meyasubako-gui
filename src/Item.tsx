@@ -8,7 +8,6 @@ import ItemComments from "./components/ItemComments"
 
 export default () => {
   const [item, setItem] = createSignal<any>(null)
-  const [comments, setComments] = createSignal([])
   const [loading, setLoading] = createSignal(false)
   const [searchParams] = useSearchParams()
   const params = useParams()

@@ -5,7 +5,7 @@ import VoteButton from "./VoteButton"
 import SortButtons from "./SortButtons"
 import SearchBox from "./SearchBox"
 
-export default ({ items, onUpdate, title = "目安" }: any) => {
+export default ({ items, onUpdate, title = "アイテム" }: any) => {
   return (
     <div class="card bg-base-100 shadow-xl my-4">
       <div class="card-body">

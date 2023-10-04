@@ -2,7 +2,7 @@ import { createSignal } from "solid-js"
 import { IoSend } from "solid-icons/io"
 import { useNavigate } from "@solidjs/router"
 
-export default ({ parent_id, type = "目安" }: any) => {
+export default ({ parent_id, type = "アイテム" }: any) => {
   const { VITE_MENDOKUSAI_API_URL } = import.meta.env
 
   const [content, setContent] = createSignal("")
@@ -31,7 +31,7 @@ export default ({ parent_id, type = "目安" }: any) => {
             <textarea
               class="textarea textarea-bordered w-full"
               rows="1"
-              placeholder={`新しい${type}}`}
+              placeholder={`新しい${type}`}
               onInput={(event: any) => {
                 setContent(event?.target?.value)
               }}
