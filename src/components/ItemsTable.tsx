@@ -62,7 +62,7 @@ export default ({ items, onUpdate, title = "アイテム" }: any) => {
                     <td class="text-center">
                       <A
                         href={`/items/${item.id}`}
-                        class="btn flex flex-nowrap"
+                        class="btn flex flex-nowrap btn-outline"
                       >
                         <FaRegularComment size={18} />
                         {item.comments.length}
