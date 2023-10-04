@@ -58,7 +58,6 @@ export default ({ items, onUpdate, title = "アイテム" }: any) => {
                         type="dislike"
                       />
                     </td>
-                    {/* TODO: consider a button linking to item */}
                     <td class="text-center">
                       <A
                         href={`/items/${item.id}`}
