@@ -1,32 +1,36 @@
 import { For } from "solid-js"
 import { formatDate } from "../utils"
-import { A, useSearchParams } from "@solidjs/router"
+import { A } from "@solidjs/router"
 import VoteButton from "./VoteButton"
-import SortButton from "./SortButton"
+import SortButtons from "./SortButtons"
+import SearchBox from "./SearchBox"
 
-export default ({ items, onUpdate }: any) => {
+export default ({ items, onUpdate, title = "目安" }: any) => {
   return (
     <div class="card bg-base-100 shadow-xl my-4">
       <div class="card-body">
-        <h2 class="card-title">Items</h2>
+        <h2 class="card-title">
+          {title} ({items().length}件)
+        </h2>
+        {/* TODO: search */}
+        <div>
+          <SearchBox />
+        </div>
         <div class="">
-          {/* TODO: sorting */}
           {/* TODO: infinite scroll */}
           <table class="table">
             <thead>
               <tr>
                 <th>
-                  <SortButton sort="time" text="Date" />
+                  日付
+                  <SortButtons sort="time" />
                 </th>
+                <th>内容</th>
                 <th>
-                  <button class="btn btn-ghost no-animation">Content</button>
+                  いいね
+                  <SortButtons sort="likes" />
                 </th>
-                <th>
-                  <SortButton sort="likes" text="Likes" />
-                </th>
-                <th>
-                  <button class="btn btn-ghost no-animation">Comments</button>
-                </th>
+                <th>コメント</th>
               </tr>
             </thead>
             <tbody>

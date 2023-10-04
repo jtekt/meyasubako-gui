@@ -69,7 +69,7 @@ export default () => {
           </div>
         </div>
 
-        <NewItemForm parent_id={item().id} />
+        <NewItemForm parent_id={item().id} type="コメント" />
 
         <ItemComments item={item()} />
       </Show>

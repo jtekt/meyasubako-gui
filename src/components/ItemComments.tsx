@@ -53,7 +53,11 @@ export default ({ item }: any) => {
         </div>
       </Show>
       <Show when={!loading()}>
-        <ItemsTable items={comments} onUpdate={handleCommentUpdate} />
+        <ItemsTable
+          items={comments}
+          onUpdate={handleCommentUpdate}
+          title="コメント"
+        />
       </Show>
     </>
   )
