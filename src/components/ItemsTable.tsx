@@ -39,8 +39,9 @@ export default ({ items, onUpdate, title = "アイテム" }: any) => {
                     <td>{formatDate(item.time)}</td>
                     <td class="w-full">
                       <A
+                        class="w-full"
                         href={`/items/${item.id}`}
-                        style="white-space: pre-line;"
+                        style="display: block; white-space: pre-line;"
                       >
                         {item.content}
                       </A>
