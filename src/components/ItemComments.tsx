@@ -3,6 +3,8 @@ import { useParams, useSearchParams, A } from "@solidjs/router"
 import ItemsTable from "./ItemsTable"
 
 export default ({ item }: any) => {
+  const { VITE_MENDOKUSAI_API_URL } = import.meta.env
+
   const [comments, setComments] = createSignal([])
   const [loading, setLoading] = createSignal(false)
   const [searchParams] = useSearchParams()
@@ -15,7 +17,7 @@ export default ({ item }: any) => {
   // TODO: in a component
   async function fetchComments() {
     setLoading(true)
-    const url = new URL(`http://172.16.98.151:7070/items/`)
+    const url = new URL(`${VITE_MENDOKUSAI_API_URL}/items/`)
 
     // TODO: find better way
     Object.keys(searchParams).forEach((key) =>

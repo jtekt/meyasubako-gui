@@ -3,12 +3,14 @@ import { IoSend } from "solid-icons/io"
 import { useNavigate } from "@solidjs/router"
 
 export default ({ parent_id }: any) => {
+  const { VITE_MENDOKUSAI_API_URL } = import.meta.env
+
   const [content, setContent] = createSignal("")
   const navigate = useNavigate()
 
   const handleFormSubmit = async (event: any) => {
     event.preventDefault()
-    const url = "http://172.16.98.151:7070/items"
+    const url = "${VITE_MENDOKUSAI_API_URL}/items"
     const options = {
       method: "POST",
       body: JSON.stringify({ content: content(), parent_id }),

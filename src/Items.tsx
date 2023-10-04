@@ -10,9 +10,10 @@ import ItemsTable from "./components/ItemsTable"
 import { useSearchParams } from "@solidjs/router"
 
 export default () => {
+  const { VITE_MENDOKUSAI_API_URL } = import.meta.env
+
   const [items, setItems] = createSignal([])
   const [loading, setLoading] = createSignal(false)
-
   const [searchParams] = useSearchParams()
   createEffect(() => {
     fetchItems()
@@ -23,7 +24,7 @@ export default () => {
   async function fetchItems() {
     setLoading(true)
     setItems([])
-    const url = new URL(`http://172.16.98.151:7070/items`)
+    const url = new URL(`${VITE_MENDOKUSAI_API_URL}/items`)
 
     // TODO: find better way
     Object.keys(searchParams).forEach((key) =>

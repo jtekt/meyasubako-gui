@@ -3,7 +3,6 @@ import { useParams, useSearchParams, A } from "@solidjs/router"
 import { FaSolidArrowLeft } from "solid-icons/fa"
 import { formatDate } from "./utils"
 import VoteButton from "./components/VoteButton"
-import ItemsTable from "./components/ItemsTable"
 import NewItemForm from "./components/NewItemForm"
 import ItemComments from "./components/ItemComments"
 
@@ -14,6 +13,8 @@ export default () => {
   const [searchParams] = useSearchParams()
   const params = useParams()
 
+  const { VITE_MENDOKUSAI_API_URL } = import.meta.env
+
   createEffect(() => {
     fetchItem()
   })
@@ -21,7 +22,7 @@ export default () => {
   async function fetchItem() {
     setItem(null)
     setLoading(true)
-    const url = new URL(`http://172.16.98.151:7070/items/${params.id}`)
+    const url = new URL(`${VITE_MENDOKUSAI_API_URL}/items/${params.id}`)
 
     // TODO: find better way
     Object.keys(searchParams).forEach((key) =>

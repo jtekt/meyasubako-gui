@@ -4,11 +4,13 @@ import { votes, setVotes } from "../votesStore"
 import "./button.css"
 
 export default ({ type, item, onUpdate }: any) => {
+  const { VITE_MENDOKUSAI_API_URL } = import.meta.env
+
   const [loading, setLoading] = createSignal(false)
 
   const vote = async () => {
     setLoading(true)
-    const url = `http://172.16.98.151:7070/items/${item.id}/${type}`
+    const url = `${VITE_MENDOKUSAI_API_URL}/items/${item.id}/${type}`
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
