@@ -3,19 +3,8 @@ import { formatDate } from "../utils"
 import { A, useSearchParams } from "@solidjs/router"
 import VoteButton from "./VoteButton"
 import SortButton from "./SortButton"
-import {
-  FaRegularCommentDots,
-  FaRegularThumbsUp,
-  FaRegularCalendar,
-} from "solid-icons/fa"
-import { BsCardText } from "solid-icons/bs"
 
 export default ({ items, onUpdate }: any) => {
-  const [searchParams, setSearchParams] = useSearchParams()
-  function sortBy(sort: string) {
-    setSearchParams({ ...searchParams, sort })
-  }
-
   return (
     <div class="card bg-base-100 shadow-xl my-4">
       <div class="card-body">
@@ -29,11 +18,15 @@ export default ({ items, onUpdate }: any) => {
                 <th>
                   <SortButton sort="time" text="Date" />
                 </th>
-                <th>Content</th>
+                <th>
+                  <button class="btn btn-ghost no-animation">Content</button>
+                </th>
                 <th>
                   <SortButton sort="likes" text="Likes" />
                 </th>
-                <th>Comments</th>
+                <th>
+                  <button class="btn btn-ghost no-animation">Comments</button>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -41,7 +34,7 @@ export default ({ items, onUpdate }: any) => {
                 {(item: any) => (
                   <tr>
                     <td>{formatDate(item.time)}</td>
-                    <td class="overflow-hidden">
+                    <td class="w-full">
                       <A href={`/items/${item.id}`}>{item.content}</A>
                     </td>
                     <td class="flex items-center gap-2 ">

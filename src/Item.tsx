@@ -1,21 +1,17 @@
-import {
-  createEffect,
-  createResource,
-  createSignal,
-  onMount,
-  Show,
-} from "solid-js"
-import { useParams, A } from "@solidjs/router"
+import { createEffect, createSignal, onMount, Show } from "solid-js"
+import { useParams, useSearchParams, A } from "@solidjs/router"
 import { FaSolidArrowLeft } from "solid-icons/fa"
 import { formatDate } from "./utils"
 import VoteButton from "./components/VoteButton"
 import ItemsTable from "./components/ItemsTable"
 import NewItemForm from "./components/NewItemForm"
+import ItemComments from "./components/ItemComments"
 
 export default () => {
   const [item, setItem] = createSignal<any>(null)
   const [comments, setComments] = createSignal([])
   const [loading, setLoading] = createSignal(false)
+  const [searchParams] = useSearchParams()
   const params = useParams()
 
   createEffect(() => {
@@ -25,25 +21,23 @@ export default () => {
   async function fetchItem() {
     setItem(null)
     setLoading(true)
-    const url = `http://172.16.98.151:7070/items/${params.id}`
+    const url = new URL(`http://172.16.98.151:7070/items/${params.id}`)
+
+    // TODO: find better way
+    Object.keys(searchParams).forEach((key) =>
+      url.searchParams.set(key, searchParams[key])
+    )
+
     const response = await fetch(url)
     const item = await response.json()
     setItem(item)
-    setComments(item.comments)
+
     setLoading(false)
   }
 
   onMount(() => {
     fetchItem()
   })
-
-  function handleCommentUpdate(i: any) {
-    const itemsCopy = comments().slice()
-    const foundIndex = itemsCopy.findIndex(({ id }: any) => id === i.id)
-    // @ts-ignore
-    itemsCopy.splice(foundIndex, 1, i)
-    setComments(itemsCopy)
-  }
 
   return (
     <>
@@ -54,18 +48,13 @@ export default () => {
       </Show>
       <Show when={item()}>
         <p class="my-4">
-          <Show when={item().parent_id}>
-            <A href={`/items/${item().parent_id}`} class="btn">
-              <FaSolidArrowLeft />
-              <span>{item().parent_id}</span>
-            </A>
-          </Show>
-          <Show when={!item().parent_id}>
-            <A href="/" class="btn">
-              <FaSolidArrowLeft />
-              All items
-            </A>
-          </Show>
+          <A
+            href={item().parent_id ? `/items/${item().parent_id}` : "/"}
+            class="btn"
+          >
+            <FaSolidArrowLeft />
+            Return
+          </A>
         </p>
         <div class="card bg-base-100 shadow-xl">
           <div class="card-body">
@@ -81,7 +70,7 @@ export default () => {
 
         <NewItemForm parent_id={item().id} />
 
-        <ItemsTable items={comments} onUpdate={handleCommentUpdate} />
+        <ItemComments item={item()} />
       </Show>
     </>
   )
