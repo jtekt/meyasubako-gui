@@ -1,4 +1,10 @@
-import { createResource, createSignal, onMount, Show } from "solid-js"
+import {
+  createEffect,
+  createResource,
+  createSignal,
+  onMount,
+  Show,
+} from "solid-js"
 import { useParams, A } from "@solidjs/router"
 import { FaSolidArrowLeft } from "solid-icons/fa"
 import { formatDate } from "./utils"
@@ -12,8 +18,9 @@ export default () => {
   const [loading, setLoading] = createSignal(false)
   const params = useParams()
 
-  // TODO: Most likely not the right use of createResource()
-  const [noIdeaWhatToDoWithThis] = createResource(() => params.id, fetchItem)
+  createEffect(() => {
+    fetchItem()
+  })
 
   async function fetchItem() {
     setItem(null)
