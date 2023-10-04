@@ -24,7 +24,7 @@ render(
       <header class="navbar bg-black text-white text-xl flex items-center gap-2">
         <img
           class="h-8 border-r-white border-r"
-          src="/src/assets/JTEKT_negative.jpg"
+          src="/JTEKT_negative.jpg"
           alt="JTEKT logo"
         />
         目安箱
