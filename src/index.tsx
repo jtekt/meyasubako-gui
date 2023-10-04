@@ -29,7 +29,7 @@ render(
         />
         目安箱
       </header>
-      <main class="max-w-5xl mx-auto min-h-screen">
+      <main class="max-w-7xl mx-auto min-h-screen">
         <Router>
           <Routes>
             <Route path="/" component={Items} />

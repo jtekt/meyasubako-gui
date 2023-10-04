@@ -49,13 +49,10 @@ export default () => {
       <Show when={item()}>
         <p class="my-4">
           {/* TODO: simply go back */}
-          <A
-            href={item().parent_id ? `/items/${item().parent_id}` : "/"}
-            class="btn"
-          >
+          <a href="javascript:history.back()" class="btn">
             <FaSolidArrowLeft />
-            Return
-          </A>
+            戻る
+          </a>
         </p>
         <div class="card bg-base-100 shadow-xl">
           <div class="card-body">

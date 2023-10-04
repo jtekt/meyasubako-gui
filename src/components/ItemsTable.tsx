@@ -4,6 +4,7 @@ import { A } from "@solidjs/router"
 import VoteButton from "./VoteButton"
 import SortButtons from "./SortButtons"
 import SearchBox from "./SearchBox"
+import { FaRegularComment } from "solid-icons/fa"
 
 export default ({ items, onUpdate, title = "アイテム" }: any) => {
   return (
@@ -58,7 +59,15 @@ export default ({ items, onUpdate, title = "アイテム" }: any) => {
                       />
                     </td>
                     {/* TODO: consider a button linking to item */}
-                    <td class="text-center">{item.comments.length}</td>
+                    <td class="text-center">
+                      <A
+                        href={`/items/${item.id}`}
+                        class="btn flex flex-nowrap"
+                      >
+                        <FaRegularComment size={18} />
+                        {item.comments.length}
+                      </A>
+                    </td>
                   </tr>
                 )}
               </For>
