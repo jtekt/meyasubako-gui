@@ -21,7 +21,14 @@ setVotes(JSON.parse(votesString))
 render(
   () => (
     <>
-      <header class="navbar bg-black text-white text-2xl">目安箱</header>
+      <header class="navbar bg-black text-white text-xl flex items-center gap-2">
+        <img
+          class="h-8 border-r-white border-r"
+          src="/src/assets/JTEKT_negative.jpg"
+          alt="JTEKT logo"
+        />
+        目安箱
+      </header>
       <main class="max-w-5xl mx-auto">
         <Router>
           <Routes>
