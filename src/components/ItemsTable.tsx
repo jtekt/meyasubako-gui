@@ -12,7 +12,6 @@ export default ({ items, onUpdate, title = "目安" }: any) => {
         <h2 class="card-title">
           {title} ({items().length}件)
         </h2>
-        {/* TODO: search */}
         <div>
           <SearchBox />
         </div>
@@ -39,7 +38,12 @@ export default ({ items, onUpdate, title = "目安" }: any) => {
                   <tr>
                     <td>{formatDate(item.time)}</td>
                     <td class="w-full">
-                      <A href={`/items/${item.id}`}>{item.content}</A>
+                      <A
+                        href={`/items/${item.id}`}
+                        style="white-space: pre-line;"
+                      >
+                        {item.content}
+                      </A>
                     </td>
                     <td class="flex items-center gap-2 ">
                       <VoteButton item={item} onUpdate={onUpdate} type="like" />
@@ -52,6 +56,7 @@ export default ({ items, onUpdate, title = "目安" }: any) => {
                         type="dislike"
                       />
                     </td>
+                    {/* TODO: consider a button linking to item */}
                     <td class="text-center">{item.comments.length}</td>
                   </tr>
                 )}

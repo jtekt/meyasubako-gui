@@ -49,6 +49,7 @@ export default () => {
       </Show>
       <Show when={item()}>
         <p class="my-4">
+          {/* TODO: simply go back */}
           <A
             href={item().parent_id ? `/items/${item().parent_id}` : "/"}
             class="btn"
@@ -60,7 +61,9 @@ export default () => {
         <div class="card bg-base-100 shadow-xl">
           <div class="card-body">
             <p>{formatDate(item().time)}</p>
-            <h2 class="card-title">{item().content}</h2>
+            <h2 class="card-title" style="white-space: pre-line;">
+              {item().content}
+            </h2>
             <div class="card-actions justify-end flex items-center">
               <VoteButton item={item()} onUpdate={setItem} type="like" />
               <span>{item().likes}</span>

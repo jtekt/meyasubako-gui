@@ -28,14 +28,14 @@ export default ({ parent_id, type = "目安" }: any) => {
 
         <form onsubmit={handleFormSubmit} class="flex gap-2 my-2">
           <div class="form-control w-full">
-            <input
-              type="text"
+            <textarea
+              class="textarea textarea-bordered w-full"
+              placeholder={`新しい${type}}`}
               onInput={(event: any) => {
                 setContent(event?.target?.value)
               }}
-              placeholder={`新しい${type}}`}
-              class="input input-bordered w-full"
-            />
+            ></textarea>
+
             <label class="label">
               <span class="label-text-alt">{type}は匿名で登録されます</span>
             </label>
