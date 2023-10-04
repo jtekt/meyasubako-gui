@@ -1,23 +1,25 @@
 <template>
   <div class="home">
-    <h1>無駄削減</h1>
+    <h2>目安箱アプリ</h2>
     <p>
       業務効率改善のために、日常業務にある改善できそうなことをここにリストアップしましょう！
     </p>
 
-    <h2></h2>
     <v-form class="" @submit.prevent="submit()">
       <v-row align="center">
         <v-col>
-          <v-text-field
-            type="text"
+          <v-textarea
             v-model="monku_content"
             label="アイテム追加"
+            rows="1"
+            auto-grow
+            hint="アイテムは匿名で登録されます"
           />
         </v-col>
         <v-col cols="auto">
-          <v-btn type="submit" icon>
-            <v-icon>mdi-send</v-icon>
+          <v-btn type="submit" color="primary">
+            <v-icon left>mdi-send</v-icon>
+            送信
           </v-btn>
         </v-col>
       </v-row>

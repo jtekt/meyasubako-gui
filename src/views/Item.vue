@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-toolbar flat>
-      <v-btn :to="{ name: 'Home' }" exact text>
+      <v-btn :to="{ name: 'Items' }" exact text>
         <v-icon left>mdi-arrow-left</v-icon>
         <span>戻る</span>
       </v-btn>
@@ -14,18 +14,23 @@
     <template v-if="monku">
       <Item v-bind:item="monku" @vote="vote_monku($event)" />
 
+      <h3 class="mt-6">コメント</h3>
+
       <v-form class="" @submit.prevent="submit_proposal()">
         <v-row align="center">
           <v-col>
-            <v-text-field
-              type="text"
+            <v-textarea
               v-model="proposal_content"
-              label="コメント"
+              label="新しいコメント"
+              rows="1"
+              auto-grow
+              hint="コメントは匿名で登録されます"
             />
           </v-col>
           <v-col cols="auto">
-            <v-btn type="submit" icon>
-              <v-icon>mdi-comment-plus</v-icon>
+            <v-btn type="submit">
+              <v-icon left>mdi-comment-plus</v-icon>
+              送信
             </v-btn>
           </v-col>
         </v-row>
@@ -71,10 +76,7 @@ export default {
           content: this.proposal_content,
         })
         .then(() => {
-          // Clear input
           this.proposal_content = ""
-
-          // Reload data
           this.get_monku()
         })
         .catch((error) => console.log(error))
@@ -82,19 +84,18 @@ export default {
     get_monku() {
       this.loading = true
 
-      const url = `/monku/${this.$route.params.monku_id}`
+      const url = `/monku/${this.$route.params.item_id}`
       this.axios
         .get(url)
         .then(({ data }) => {
-          console.log(data)
           this.monku = data[0]
         })
-        .catch((error) => console.log(error))
+        .catch((error) => console.error(error))
         .finally(() => (this.loading = false))
     },
 
     vote_monku(data) {
-      const url = `/monku/${this.$route.params.monku_id}/vote`
+      const url = `/monku/${this.$route.params.item_id}/vote`
 
       this.axios
         .post(url, {
@@ -103,7 +104,7 @@ export default {
         .then((response) => {
           this.monku.likes = response.data.value.likes
         })
-        .catch((error) => console.log(error))
+        .catch((error) => console.error(error))
     },
     vote_proposal(data) {
       const url = `/proposals/${data.id}/vote`
@@ -119,7 +120,7 @@ export default {
 
           if (found_proposal) found_proposal.likes = response.data.value.likes
         })
-        .catch((error) => console.log(error))
+        .catch((error) => console.error(error))
     },
   },
   computed: {

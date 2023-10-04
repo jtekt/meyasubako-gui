@@ -5,7 +5,7 @@
         <v-col cols="auto">
           {{ formatted_date }}
         </v-col>
-        <v-col>
+        <v-col style="white-space: pre-line">
           {{ item.content }}
         </v-col>
         <v-col cols="2">
@@ -37,9 +37,10 @@
         </v-col>
         <v-col cols="1" v-if="link">
           <v-btn
-            :to="{ name: 'monku', params: { monku_id: item._id } }"
+            block
+            :to="{ name: 'Item', params: { item_id: item._id } }"
             text
-            class="grey--text"
+            class="grey--text text--darken-2"
           >
             <v-icon left>mdi-comment</v-icon>
             x {{ item.proposals.length }}
@@ -85,7 +86,6 @@ export default {
       return timestamp_date.toLocaleString("ja-JP", options)
     },
     user_vote() {
-      console.log(this.item)
       const found_vote = this.$store.state.votes.find(
         (stored_vote) => stored_vote.id === this.item._id
       )
