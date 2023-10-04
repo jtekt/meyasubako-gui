@@ -25,7 +25,7 @@ build:
   tags:
     - dind
   only:
-    - master
+    - legacy
   before_script:
     # ECR login for pushing
     - >
@@ -51,7 +51,7 @@ build:
 deploy:
   stage: deploy
   only:
-    - master
+    - legacy
   tags:
     - dind
   before_script:
