@@ -1,6 +1,7 @@
 /* @refresh reload */
 import { render } from "solid-js/web"
 import { Router, Route, Routes } from "@solidjs/router"
+import { votes, setVotes } from "./votesStore"
 
 import "./index.css"
 import Items from "./Items"
@@ -14,14 +15,22 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
   )
 }
 
+const votesString = localStorage.getItem("votes") || "[]"
+setVotes(JSON.parse(votesString))
+
 render(
   () => (
-    <Router>
-      <Routes>
-        <Route path="/" component={Items} />
-        <Route path="/items/:id" component={Item} />
-      </Routes>
-    </Router>
+    <>
+      <header class="navbar bg-black text-white text-2xl">目安箱</header>
+      <main class="max-w-5xl mx-auto">
+        <Router>
+          <Routes>
+            <Route path="/" component={Items} />
+            <Route path="/items/:id" component={Item} />
+          </Routes>
+        </Router>
+      </main>
+    </>
   ),
   root!
 )

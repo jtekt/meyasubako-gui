@@ -1,5 +1,7 @@
-import { createSignal, onMount, Show } from "solid-js"
+import { createSignal, Show } from "solid-js"
 import { FaRegularThumbsUp, FaRegularThumbsDown } from "solid-icons/fa"
+import { votes, setVotes } from "../votesStore"
+import "./button.css"
 
 export default ({ type, item, onUpdate }: any) => {
   const [loading, setLoading] = createSignal(false)
@@ -13,14 +15,23 @@ export default ({ type, item, onUpdate }: any) => {
     }
     const response = await fetch(url, options)
     const data = await response.json()
+    setVotes([...votes, { item_id: item.id, type }])
+    localStorage.setItem("votes", JSON.stringify(votes))
     onUpdate(data)
     setLoading(false)
   }
 
+  const foundVote = votes.find((vote: any) => vote.item_id === item.id)
+  const btnClass = () => (foundVote?.type === type ? "btn clicked" : "btn")
+
   return (
-    <button class="btn" onClick={() => vote()} disabled={loading()}>
+    <button
+      class={btnClass()}
+      onClick={() => vote()}
+      disabled={loading() || !!foundVote}
+    >
       <Show when={loading()}>
-        <span class="loading loading-spinner"></span>
+        <span class="loading loading-spinner" />
       </Show>
       <Show when={!loading()}>
         <Show when={type === "like"}>
