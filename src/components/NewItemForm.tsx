@@ -30,6 +30,7 @@ export default ({ parent_id, type = "目安" }: any) => {
           <div class="form-control w-full">
             <textarea
               class="textarea textarea-bordered w-full"
+              rows="1"
               placeholder={`新しい${type}}`}
               onInput={(event: any) => {
                 setContent(event?.target?.value)
