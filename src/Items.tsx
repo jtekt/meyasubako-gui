@@ -1,16 +1,36 @@
-import { createSignal, onMount, Show } from "solid-js"
+import {
+  createSignal,
+  createEffect,
+  createResource,
+  onMount,
+  Show,
+} from "solid-js"
 import NewItemForm from "./components/NewItemForm"
 import ItemsTable from "./components/ItemsTable"
+import { useSearchParams } from "@solidjs/router"
 
 export default () => {
   const [items, setItems] = createSignal([])
   const [loading, setLoading] = createSignal(false)
 
-  const fetchItems = async () => {
+  const [searchParams] = useSearchParams()
+  createEffect(() => {
+    fetchItems()
+  })
+
+  // TODO: watch searchParams and fetch accordingly
+
+  async function fetchItems() {
     setLoading(true)
     setItems([])
-    const url = "http://172.16.98.151:7070/items"
-    const response = await fetch(url)
+    const url = new URL(`http://172.16.98.151:7070/items`)
+
+    // TODO: find better way
+    Object.keys(searchParams).forEach((key) =>
+      url.searchParams.set(key, searchParams[key])
+    )
+
+    const response = await fetch(url.toString())
     const data = await response.json()
     setItems(data.items)
     setLoading(false)

@@ -1,7 +1,8 @@
 import { For } from "solid-js"
 import { formatDate } from "../utils"
-import { A } from "@solidjs/router"
+import { A, useSearchParams } from "@solidjs/router"
 import VoteButton from "./VoteButton"
+import SortButton from "./SortButton"
 import {
   FaRegularCommentDots,
   FaRegularThumbsUp,
@@ -10,6 +11,11 @@ import {
 import { BsCardText } from "solid-icons/bs"
 
 export default ({ items, onUpdate }: any) => {
+  const [searchParams, setSearchParams] = useSearchParams()
+  function sortBy(sort: string) {
+    setSearchParams({ ...searchParams, sort })
+  }
+
   return (
     <div class="card bg-base-100 shadow-xl my-4">
       <div class="card-body">
@@ -21,17 +27,13 @@ export default ({ items, onUpdate }: any) => {
             <thead>
               <tr>
                 <th>
-                  <FaRegularCalendar size={18} />
+                  <SortButton sort="time" text="Date" />
                 </th>
+                <th>Content</th>
                 <th>
-                  <BsCardText size={18} />
+                  <SortButton sort="likes" text="Likes" />
                 </th>
-                <th>
-                  <FaRegularThumbsUp size={18} />
-                </th>
-                <th>
-                  <FaRegularCommentDots size={18} />
-                </th>
+                <th>Comments</th>
               </tr>
             </thead>
             <tbody>

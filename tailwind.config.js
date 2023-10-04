@@ -4,7 +4,7 @@ const jtektTheme = {
   primary: "#c00000",
   secondary: "#f000b8",
   accent: "#1dcdbc",
-  neutral: "#2b3440",
+  neutral: "#333333",
   "base-100": "#ffffff",
   info: "#3abff8",
   success: "#36d399",

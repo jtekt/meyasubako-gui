@@ -1,7 +1,7 @@
 /* @refresh reload */
 import { render } from "solid-js/web"
 import { Router, Route, Routes } from "@solidjs/router"
-import { votes, setVotes } from "./votesStore"
+import { setVotes } from "./votesStore"
 
 import "./index.css"
 import Items from "./Items"
@@ -29,7 +29,7 @@ render(
         />
         目安箱
       </header>
-      <main class="max-w-5xl mx-auto">
+      <main class="max-w-5xl mx-auto min-h-screen">
         <Router>
           <Routes>
             <Route path="/" component={Items} />
@@ -37,6 +37,9 @@ render(
           </Routes>
         </Router>
       </main>
+      <footer class="footer footer-center p-2 bg-neutral text-neutral-content">
+        目安箱 - Maxime MOREILLON - JTEKT Corporation
+      </footer>
     </>
   ),
   root!
