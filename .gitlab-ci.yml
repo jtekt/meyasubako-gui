@@ -10,6 +10,7 @@ variables:
   CONTAINER_IMAGE_TAGGED: ${CONTAINER_IMAGE}:${CONTAINER_TAG}
   K8S_NODEPORT: 30556
   K8S_ECR_SECRET_NAME: ecr-credentials
+  K8S_INGRESS_HOST: meyasubako.rnd-jtekt.local
 
 image: moreillon/ci-dind:4bca50d7
 services:
