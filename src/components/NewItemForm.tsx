@@ -10,6 +10,7 @@ export default ({ parent_id, type = "アイテム" }: any) => {
 
   const handleFormSubmit = async (event: any) => {
     event.preventDefault()
+    if (!confirm("登録しますか？")) return
     const url = `${VITE_MENDOKUSAI_API_URL}/items`
     const options = {
       method: "POST",
