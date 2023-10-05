@@ -7,10 +7,8 @@ variables:
 
   ECR_URL: 732469118990.dkr.ecr.ap-northeast-1.amazonaws.com
 
-  CONTAINER_TAG: ${CI_COMMIT_SHORT_SHA}
-
+  CONTAINER_TAG: legacy-${CI_COMMIT_SHORT_SHA}
   CONTAINER_IMAGE: ${ECR_URL}/${APPLICATION_NAME}
-  CONTAINER_IMAGE_LATEST: ${CONTAINER_IMAGE}:latest
   CONTAINER_IMAGE_TAGGED: ${CONTAINER_IMAGE}:${CONTAINER_TAG}
 
   K8S_SERVICE_PORT: 30555
@@ -39,14 +37,8 @@ build:
       aws ecr create-repository --repository-name ${APPLICATION_NAME}
       || echo "Repository might have already existed"
   script:
-    # Build the container image
-    - docker build -t ${CONTAINER_IMAGE} .
-    # Tag image
-    - docker tag ${CONTAINER_IMAGE} ${CONTAINER_IMAGE_LATEST}
-    - docker tag ${CONTAINER_IMAGE} ${CONTAINER_IMAGE_TAGGED}
-    # Push container images to registry
+    - docker build -t ${CONTAINER_IMAGE_TAGGED} .
     - docker push ${CONTAINER_IMAGE_TAGGED}
-    - docker push ${CONTAINER_IMAGE_LATEST}
 
 deploy:
   stage: deploy
