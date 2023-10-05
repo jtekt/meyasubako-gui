@@ -19,7 +19,6 @@ spec:
             - containerPort: 80
       imagePullSecrets:
         - name: ${K8S_ECR_SECRET_NAME}
-
 ---
 apiVersion: v1
 kind: Service

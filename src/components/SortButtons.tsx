@@ -1,7 +1,7 @@
 import { useSearchParams } from "@solidjs/router"
 import { FaSolidArrowDown, FaSolidArrowUp } from "solid-icons/fa"
 
-export default ({ sort, text }: any) => {
+export default ({ sort }: any) => {
   const [searchParams, setSearchParams] = useSearchParams()
 
   function applySort(order: string) {
