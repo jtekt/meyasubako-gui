@@ -1,10 +1,4 @@
-import {
-  createSignal,
-  createEffect,
-  createResource,
-  onMount,
-  Show,
-} from "solid-js"
+import { createSignal, createEffect, onMount, Show } from "solid-js"
 import NewItemForm from "./components/NewItemForm"
 import ItemsTable from "./components/ItemsTable"
 import { useSearchParams } from "@solidjs/router"
@@ -19,14 +13,11 @@ export default () => {
     fetchItems()
   })
 
-  // TODO: watch searchParams and fetch accordingly
-
   async function fetchItems() {
     setLoading(true)
     setItems([])
     const url = new URL(`${VITE_MENDOKUSAI_API_URL}/items`)
 
-    // TODO: find better way
     Object.keys(searchParams).forEach((key) =>
       url.searchParams.set(key, searchParams[key])
     )

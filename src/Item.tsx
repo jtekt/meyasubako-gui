@@ -23,7 +23,6 @@ export default () => {
     setLoading(true)
     const url = new URL(`${VITE_MENDOKUSAI_API_URL}/items/${params.id}`)
 
-    // TODO: find better way
     Object.keys(searchParams).forEach((key) =>
       url.searchParams.set(key, searchParams[key])
     )
@@ -48,7 +47,6 @@ export default () => {
       </Show>
       <Show when={item()}>
         <p class="my-4">
-          {/* TODO: simply go back */}
           <a href="javascript:history.back()" class="btn">
             <FaSolidArrowLeft />
             戻る
