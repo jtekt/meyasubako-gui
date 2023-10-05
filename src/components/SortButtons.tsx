@@ -13,7 +13,7 @@ export default ({ sort }: any) => {
     const { sort: currentSort = "likes", order: currentOrder = "desc" } =
       searchParams
     if (currentSort === sort && currentOrder === newOrder)
-      out = `${out} btn-primary`
+      out = `${out} btn-outline`
     else out = `${out} btn-ghost`
     return out
   }
