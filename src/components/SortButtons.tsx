@@ -8,8 +8,6 @@ export default ({ sort }: any) => {
     setSearchParams({ ...searchParams, sort, order }, { replace: true })
   }
 
-  // Hi
-
   function buttonClass(newOrder: string) {
     let out = `btn btn-xs`
     const { sort: currentSort = "likes", order: currentOrder = "desc" } =
