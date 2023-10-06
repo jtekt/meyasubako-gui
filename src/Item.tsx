@@ -4,8 +4,7 @@ import { FaSolidArrowLeft } from "solid-icons/fa"
 import { formatDate } from "./utils"
 import VoteButton from "./components/VoteButton"
 import NewItemForm from "./components/NewItemForm"
-import ItemComments from "./components/ItemComments"
-
+import ItemsTable from "./components/ItemsTable"
 export default () => {
   const [item, setItem] = createSignal<any>(null)
   const [loading, setLoading] = createSignal(false)
@@ -63,7 +62,7 @@ export default () => {
 
         <NewItemForm parent_id={item().id} type="コメント" />
 
-        <ItemComments item={item()} />
+        <ItemsTable title="コメント" />
       </Show>
     </>
   )
