@@ -9,11 +9,11 @@ export default ({ sort }: any) => {
   }
 
   function buttonClass(newOrder: string) {
-    let out = `btn btn-xs`
+    let out = `btn btn-xs btn-square`
     const { sort: currentSort = "likes", order: currentOrder = "desc" } =
       searchParams
     if (currentSort === sort && currentOrder === newOrder)
-      out = `${out} btn-outline`
+      out = `${out} btn-active`
     else out = `${out} btn-ghost`
     return out
   }
