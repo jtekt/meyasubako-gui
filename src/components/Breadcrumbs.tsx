@@ -18,7 +18,7 @@ export default ({ item }: any) => {
         <li>
           <A href={`/`} class="btn">
             <VsHome size={20} />
-            <span class="ml-2">アイテム一覧</span>
+            <span>アイテム一覧</span>
           </A>
         </li>
         <For each={getParentsRecursively(item())}>
@@ -26,7 +26,7 @@ export default ({ item }: any) => {
             <li>
               <A href={`/items/${parent.id}`} class="btn">
                 <FaRegularComment size={20} />
-                <span class="ml-2">{parent.id}</span>
+                <span>{parent.id}</span>
               </A>
             </li>
           )}
@@ -34,7 +34,7 @@ export default ({ item }: any) => {
         <li>
           <span class="btn btn-disabled">
             <FaRegularComment size={20} />
-            <span class="ml-2">{item().id}</span>
+            <span>{item().id}</span>
           </span>
         </li>
       </ul>
