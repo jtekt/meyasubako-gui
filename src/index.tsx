@@ -1,7 +1,7 @@
 /* @refresh reload */
 import { render } from "solid-js/web"
 import { Router, Route, Routes } from "@solidjs/router"
-import { setVotes } from "./votesStore"
+import { setVotes } from "./store"
 
 import "./index.css"
 import Items from "./Items"

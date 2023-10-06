@@ -1,6 +1,6 @@
 import { createSignal, Show } from "solid-js"
 import { FaRegularThumbsUp, FaRegularThumbsDown } from "solid-icons/fa"
-import { votes, setVotes } from "../votesStore"
+import { votes, setVotes } from "../store"
 import "./button.css"
 
 export default ({ type, item, onUpdate }: any) => {
@@ -23,14 +23,14 @@ export default ({ type, item, onUpdate }: any) => {
     setLoading(false)
   }
 
-  const foundVote = votes.find((vote: any) => vote.item_id === item.id)
-  const btnClass = () => (foundVote?.type === type ? "btn clicked" : "btn")
+  const foundVote = () => votes.find((vote: any) => vote.item_id === item.id)
+  const btnClass = () => (foundVote()?.type === type ? "btn clicked" : "btn")
 
   return (
     <button
       class={btnClass()}
       onClick={() => vote()}
-      disabled={loading() || !!foundVote}
+      disabled={loading() || !!foundVote()}
     >
       <Show when={loading()}>
         <span class="loading loading-spinner" />
