@@ -22,6 +22,7 @@ build:
     - dind
   only:
     - solid
+    - master
   before_script:
     # ECR login for pushing
     - >
@@ -41,6 +42,9 @@ deploy:
   stage: deploy
   tags:
     - dind
+  only:
+    - solid
+    - master
   before_script:
     # Create a secret with ECR credentials for K8s to pull
     # Here, we use apply to update it
