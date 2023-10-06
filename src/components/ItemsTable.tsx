@@ -69,67 +69,69 @@ export default ({ title = "アイテム" }: any) => {
         <h2 class="card-title">
           {title} ({total()}件)
         </h2>
-        <div>
-          <SearchBox />
-        </div>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>
-                日付
-                <SortButtons sort="time" />
-              </th>
-              <th>内容</th>
-              <th>
-                いいね
-                <SortButtons sort="likes" />
-              </th>
-              <th>コメント</th>
-            </tr>
-          </thead>
-          <tbody>
-            <For each={items()}>
-              {(item: any) => (
-                <tr>
-                  <td>{formatDate(item.time)}</td>
-                  <td class="w-full">
-                    <A
-                      class="w-full"
-                      href={`/items/${item.id}`}
-                      style="display: block; white-space: pre-line;"
-                    >
-                      {item.content}
-                    </A>
-                  </td>
-                  <td class="flex items-center gap-2 ">
-                    <VoteButton
-                      item={item}
-                      onUpdate={handleUpdate}
-                      type="like"
-                    />
-                    <span class="basis-10 text-center text-lg">
-                      {item.likes}
-                    </span>
-                    <VoteButton
-                      item={item}
-                      onUpdate={handleUpdate}
-                      type="dislike"
-                    />
-                  </td>
-                  <td class="text-center">
-                    <A
-                      href={`/items/${item.id}`}
-                      class="btn flex flex-nowrap btn-outline"
-                    >
-                      <FaRegularComment size={18} />
-                      {item.comments.length}
-                    </A>
-                  </td>
-                </tr>
-              )}
-            </For>
-          </tbody>
-        </table>
+        <Show when={total()}>
+          <div>
+            <SearchBox />
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>
+                  日付
+                  <SortButtons sort="time" />
+                </th>
+                <th>内容</th>
+                <th>
+                  いいね
+                  <SortButtons sort="likes" />
+                </th>
+                <th>コメント</th>
+              </tr>
+            </thead>
+            <tbody>
+              <For each={items()}>
+                {(item: any) => (
+                  <tr>
+                    <td>{formatDate(item.time)}</td>
+                    <td class="w-full">
+                      <A
+                        class="w-full"
+                        href={`/items/${item.id}`}
+                        style="display: block; white-space: pre-line;"
+                      >
+                        {item.content}
+                      </A>
+                    </td>
+                    <td class="flex items-center gap-2 ">
+                      <VoteButton
+                        item={item}
+                        onUpdate={handleUpdate}
+                        type="like"
+                      />
+                      <span class="basis-10 text-center text-lg">
+                        {item.likes}
+                      </span>
+                      <VoteButton
+                        item={item}
+                        onUpdate={handleUpdate}
+                        type="dislike"
+                      />
+                    </td>
+                    <td class="text-center">
+                      <A
+                        href={`/items/${item.id}`}
+                        class="btn flex flex-nowrap btn-outline"
+                      >
+                        <FaRegularComment size={18} />
+                        {item.comments.length}
+                      </A>
+                    </td>
+                  </tr>
+                )}
+              </For>
+            </tbody>
+          </table>
+        </Show>
         <Show when={loading()}>
           <div class="text-center">
             <span class="loading loading-spinner loading-lg" />
