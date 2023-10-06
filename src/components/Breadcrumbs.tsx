@@ -1,7 +1,6 @@
 import { For } from "solid-js"
 import { A } from "@solidjs/router"
 import { VsHome } from "solid-icons/vs"
-import { FaRegularComment } from "solid-icons/fa"
 
 export default ({ item }: any) => {
   const getParentsRecursively = (item: any) => {
@@ -17,6 +16,7 @@ export default ({ item }: any) => {
       <ul>
         <li>
           <A href={`/`} class="btn">
+            <VsHome size={20} />
             <span>ホーム</span>
           </A>
         </li>
