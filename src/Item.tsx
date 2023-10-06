@@ -1,5 +1,5 @@
 import { createEffect, createSignal, onMount, Show } from "solid-js"
-import { useParams, useSearchParams, A } from "@solidjs/router"
+import { useParams } from "@solidjs/router"
 import { FaSolidArrowLeft } from "solid-icons/fa"
 import { formatDate } from "./utils"
 import VoteButton from "./components/VoteButton"
@@ -9,7 +9,6 @@ import ItemComments from "./components/ItemComments"
 export default () => {
   const [item, setItem] = createSignal<any>(null)
   const [loading, setLoading] = createSignal(false)
-  const [searchParams] = useSearchParams()
   const params = useParams()
 
   const { VITE_MENDOKUSAI_API_URL } = import.meta.env
@@ -22,10 +21,6 @@ export default () => {
     setItem(null)
     setLoading(true)
     const url = new URL(`${VITE_MENDOKUSAI_API_URL}/items/${params.id}`)
-
-    Object.keys(searchParams).forEach((key) =>
-      url.searchParams.set(key, searchParams[key])
-    )
 
     const response = await fetch(url)
     const item = await response.json()

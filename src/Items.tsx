@@ -7,14 +7,14 @@ import { createIntersectionObserver } from "@solid-primitives/intersection-obser
 export default () => {
   const { VITE_MENDOKUSAI_API_URL } = import.meta.env
 
-  const [intersectionObserverTargets, setIntersectionObserverTargets] =
-    createSignal<Element[]>([])
-
   const [items, setItems] = createSignal<any[]>([])
   const [total, setTotal] = createSignal(0)
   const [loading, setLoading] = createSignal(false)
+  const [intersectionObserverTargets, setIntersectionObserverTargets] =
+    createSignal<Element[]>([])
+
   const location = useLocation()
-  const take = 5
+  const take = 50
   let intersecting = false
 
   createEffect(
