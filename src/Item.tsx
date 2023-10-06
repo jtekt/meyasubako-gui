@@ -1,10 +1,11 @@
 import { createEffect, createSignal, onMount, Show } from "solid-js"
 import { useParams } from "@solidjs/router"
-import { FaSolidArrowLeft } from "solid-icons/fa"
 import { formatDate } from "./utils"
 import VoteButton from "./components/VoteButton"
 import NewItemForm from "./components/NewItemForm"
 import ItemsTable from "./components/ItemsTable"
+import Breadcrumbs from "./components/Breadcrumbs"
+
 export default () => {
   const [item, setItem] = createSignal<any>(null)
   const [loading, setLoading] = createSignal(false)
@@ -20,11 +21,9 @@ export default () => {
     setItem(null)
     setLoading(true)
     const url = new URL(`${VITE_MENDOKUSAI_API_URL}/items/${params.id}`)
-
     const response = await fetch(url)
     const item = await response.json()
     setItem(item)
-
     setLoading(false)
   }
 
@@ -40,12 +39,8 @@ export default () => {
         </div>
       </Show>
       <Show when={item()}>
-        <p class="my-4">
-          <a href="javascript:history.back()" class="btn">
-            <FaSolidArrowLeft />
-            戻る
-          </a>
-        </p>
+        <Breadcrumbs item={item} />
+
         <div class="card bg-base-100 shadow-xl">
           <div class="card-body">
             <p>{formatDate(item().time)}</p>
