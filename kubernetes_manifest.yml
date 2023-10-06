@@ -27,9 +27,11 @@ metadata:
 spec:
   ports:
     - port: 80
+      nodePort: ${K8S_NODEPORT}
   selector:
     app: ${APPLICATION_NAME}
-  type: ClusterIP
+  # type: ClusterIP
+  type: NodePort
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
