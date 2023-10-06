@@ -6,12 +6,17 @@ import SortButtons from "./SortButtons"
 import SearchBox from "./SearchBox"
 import { FaRegularComment } from "solid-icons/fa"
 
-export default ({ items, onUpdate, title = "アイテム" }: any) => {
+export default ({
+  items,
+  onUpdate,
+  title = "アイテム",
+  total = items().length,
+}: any) => {
   return (
     <div class="card bg-base-100 shadow-xl my-4">
       <div class="card-body">
         <h2 class="card-title">
-          {title} ({items().length}件)
+          {title} ({total()}件)
         </h2>
         <div>
           <SearchBox />
