@@ -92,7 +92,7 @@ export default ({ title = "アイテム" }: any) => {
               <For each={items()}>
                 {(item: any) => (
                   <tr>
-                    <td>{formatDate(item.time)}</td>
+                    <td class="text-gray-500">{formatDate(item.time)}</td>
                     <td class="w-full">
                       <A
                         class="w-full"
