@@ -3,18 +3,14 @@ stages:
   - deploy
 
 variables:
-  APPLICATION_NAME: mendokusai-front
-
+  APPLICATION_NAME: mendokusai-front-solid
   ECR_URL: 732469118990.dkr.ecr.ap-northeast-1.amazonaws.com
-
-  CONTAINER_TAG: ${CI_COMMIT_SHORT_SHA}
-
-  CONTAINER_IMAGE: ${ECR_URL}/${APPLICATION_NAME}
-  CONTAINER_IMAGE_LATEST: ${CONTAINER_IMAGE}:latest
+  CONTAINER_TAG: solid-${CI_COMMIT_SHORT_SHA}
+  CONTAINER_IMAGE: ${ECR_URL}/mendokusai-front
   CONTAINER_IMAGE_TAGGED: ${CONTAINER_IMAGE}:${CONTAINER_TAG}
-
-  K8S_SERVICE_PORT: 30555
-  K8S_ECR_SECRET: ecr-credentials
+  K8S_NODEPORT: 30556
+  K8S_ECR_SECRET_NAME: ecr-credentials
+  K8S_INGRESS_HOST: meyasubako.rnd-jtekt.local
 
 image: moreillon/ci-dind:4bca50d7
 services:
@@ -25,6 +21,7 @@ build:
   tags:
     - dind
   only:
+    - solid
     - master
   before_script:
     # ECR login for pushing
@@ -34,39 +31,34 @@ build:
       --username AWS
       --password-stdin
       ${ECR_URL}
-    # Create repository if needed
     - >
-      aws ecr create-repository --repository-name ${APPLICATION_NAME}
+      aws ecr create-repository --repository-name mendokusai-front
       || echo "Repository might have already existed"
   script:
-    # Build the container image
-    - docker build -t ${CONTAINER_IMAGE} .
-    # Tag image
-    - docker tag ${CONTAINER_IMAGE} ${CONTAINER_IMAGE_LATEST}
-    - docker tag ${CONTAINER_IMAGE} ${CONTAINER_IMAGE_TAGGED}
-    # Push container images to registry
+    - docker build -t ${CONTAINER_IMAGE_TAGGED} .
     - docker push ${CONTAINER_IMAGE_TAGGED}
-    - docker push ${CONTAINER_IMAGE_LATEST}
 
 deploy:
   stage: deploy
-  only:
-    - master
   tags:
     - dind
+  only:
+    - solid
+    - master
   before_script:
+    # Create a secret with ECR credentials for K8s to pull
+    # Here, we use apply to update it
+    # https://stackoverflow.com/questions/47369351/kubectl-apply-vs-kubectl-create
     - >
-      kubectl create secret docker-registry ${K8S_ECR_SECRET}
-      --docker-server=${ECR_URL}
+      kubectl create secret docker-registry ${K8S_ECR_SECRET_NAME}
+      --docker-server=${AWS_ECR_URL}
       --docker-username=AWS
       --docker-password $(aws ecr get-login-password)
       --dry-run=client -o yaml
       | kubectl apply -f -
   script:
-    # create/update the deployment
     - envsubst < kubernetes_manifest.yml | kubectl apply -f -
   environment:
     name: production
     kubernetes:
-      # Namespace obtained from GitLab
       namespace: ${KUBERNETES_NAMESPACE}
