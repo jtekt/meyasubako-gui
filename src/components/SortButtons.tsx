@@ -5,7 +5,7 @@ export default ({ sort }: any) => {
   const [searchParams, setSearchParams] = useSearchParams()
 
   function applySort(order: string) {
-    setSearchParams({ ...searchParams, sort, order })
+    setSearchParams({ ...searchParams, sort, order }, { replace: true })
   }
 
   // Hi
