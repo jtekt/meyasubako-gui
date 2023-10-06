@@ -13,28 +13,25 @@ export default ({ item }: any) => {
   }
 
   return (
-    <div class="breadcrumbs my-2 text-lg">
+    <div class="breadcrumbs">
       <ul>
         <li>
           <A href={`/`} class="btn">
-            <VsHome size={20} />
-            <span>アイテム一覧</span>
+            <span>ホーム</span>
           </A>
         </li>
         <For each={getParentsRecursively(item())}>
           {(parent: any) => (
             <li>
               <A href={`/items/${parent.id}`} class="btn">
-                <FaRegularComment size={20} />
-                <span>{parent.id}</span>
+                <span class="max-w-[20ch] truncate ... ">{parent.content}</span>
               </A>
             </li>
           )}
         </For>
         <li>
           <span class="btn btn-disabled">
-            <FaRegularComment size={20} />
-            <span>{item().id}</span>
+            <span class="max-w-[20ch] truncate ...">{item().content}</span>
           </span>
         </li>
       </ul>
