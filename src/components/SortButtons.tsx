@@ -10,7 +10,7 @@ export default ({ sort }: any) => {
 
   function buttonClass(newOrder: string) {
     let out = `btn btn-xs btn-square`
-    const { sort: currentSort = "likes", order: currentOrder = "desc" } =
+    const { sort: currentSort = "time", order: currentOrder = "desc" } =
       searchParams
     if (currentSort === sort && currentOrder === newOrder)
       out = `${out} btn-active`
