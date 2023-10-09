@@ -25,8 +25,7 @@ function loadThemeFromLocalSorage() {
   const html = document.querySelector("html")
   if (!html) return
   const theme = localStorage.getItem("theme")
-  if (!theme) return
-  html.setAttribute("data-theme", theme)
+  html.setAttribute("data-theme", theme || "light")
 }
 
 function changeTheme() {
