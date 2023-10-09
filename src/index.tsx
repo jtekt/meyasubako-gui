@@ -32,7 +32,7 @@ function changeTheme() {
   const html = document.querySelector("html")
   if (!html) return
   const currentTheme = html.getAttribute("data-theme")
-  const newTheme = currentTheme === "light" ? "dark" : "light"
+  const newTheme = currentTheme === "dark" ? "light" : "dark"
   html.setAttribute("data-theme", newTheme)
   localStorage.setItem("theme", newTheme)
 }
