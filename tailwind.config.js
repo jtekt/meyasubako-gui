@@ -2,14 +2,7 @@
 
 const jtektTheme = {
   primary: "#c00000",
-  secondary: "#f000b8",
-  accent: "#1dcdbc",
-  neutral: "#333333",
-  "base-100": "#ffffff",
-  info: "#3abff8",
-  success: "#36d399",
-  warning: "#fbbd23",
-  error: "#f87272",
+  "primary-content": "white",
 }
 
 module.exports = {
@@ -20,5 +13,19 @@ module.exports = {
   plugins: [require("daisyui")],
   daisyui: {
     themes: [{ jtektTheme }],
+    themes: [
+      {
+        light: {
+          ...require("daisyui/src/theming/themes")["[data-theme=light]"],
+          ...jtektTheme,
+        },
+      },
+      {
+        dark: {
+          ...require("daisyui/src/theming/themes")["[data-theme=dark]"],
+          ...jtektTheme,
+        },
+      },
+    ],
   },
 }
