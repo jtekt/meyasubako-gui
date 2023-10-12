@@ -11,7 +11,7 @@ export default () => {
   const [loading, setLoading] = createSignal(false)
   const params = useParams()
 
-  const { VITE_MENDOKUSAI_API_URL } = import.meta.env
+  const { VITE_MEYASUBAKO_API_URL } = import.meta.env
 
   createEffect(() => {
     fetchItem()
@@ -20,7 +20,7 @@ export default () => {
   async function fetchItem() {
     setItem(null)
     setLoading(true)
-    const url = new URL(`${VITE_MENDOKUSAI_API_URL}/items/${params.id}`)
+    const url = new URL(`${VITE_MEYASUBAKO_API_URL}/items/${params.id}`)
     const response = await fetch(url)
     const item = await response.json()
     setItem(item)

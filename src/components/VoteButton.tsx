@@ -3,7 +3,7 @@ import { FaRegularThumbsUp, FaRegularThumbsDown } from "solid-icons/fa"
 import { votes, setVotes } from "../store"
 
 export default ({ type, item, onUpdate }: any) => {
-  const { VITE_MENDOKUSAI_API_URL } = import.meta.env
+  const { VITE_MEYASUBAKO_API_URL } = import.meta.env
 
   const [loading, setLoading] = createSignal(false)
 
@@ -27,7 +27,7 @@ export default ({ type, item, onUpdate }: any) => {
 
   async function sendRequest(param: string) {
     setLoading(true)
-    const url = `${VITE_MENDOKUSAI_API_URL}/items/${item.id}/${param}`
+    const url = `${VITE_MEYASUBAKO_API_URL}/items/${item.id}/${param}`
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },

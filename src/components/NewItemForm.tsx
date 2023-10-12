@@ -3,7 +3,7 @@ import { IoSend } from "solid-icons/io"
 import { useNavigate } from "@solidjs/router"
 
 export default ({ parent_id, type = "アイテム" }: any) => {
-  const { VITE_MENDOKUSAI_API_URL } = import.meta.env
+  const { VITE_MEYASUBAKO_API_URL } = import.meta.env
 
   const [content, setContent] = createSignal("")
   const navigate = useNavigate()
@@ -11,7 +11,7 @@ export default ({ parent_id, type = "アイテム" }: any) => {
   const handleFormSubmit = async (event: any) => {
     event.preventDefault()
     if (!confirm("登録しますか？")) return
-    const url = `${VITE_MENDOKUSAI_API_URL}/items`
+    const url = `${VITE_MEYASUBAKO_API_URL}/items`
     const options = {
       method: "POST",
       body: JSON.stringify({ content: content(), parent_id }),

@@ -8,7 +8,7 @@ import SortButtons from "./SortButtons"
 import SearchBox from "./SearchBox"
 
 export default ({ title = "アイテム" }: any) => {
-  const { VITE_MENDOKUSAI_API_URL } = import.meta.env
+  const { VITE_MEYASUBAKO_API_URL } = import.meta.env
 
   const [items, setItems] = createSignal<any>([])
   const [total, setTotal] = createSignal(0)
@@ -39,7 +39,7 @@ export default ({ title = "アイテム" }: any) => {
 
   async function fetchItems() {
     setLoading(true)
-    const url = new URL(`${VITE_MENDOKUSAI_API_URL}/items${location.search}`)
+    const url = new URL(`${VITE_MEYASUBAKO_API_URL}/items${location.search}`)
 
     url.searchParams.set("skip", String(items().length))
     url.searchParams.set("take", String(take))
