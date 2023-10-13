@@ -1,9 +1,9 @@
-import { createSignal } from "solid-js"
+import { Show, createSignal } from "solid-js"
 import { IoSend } from "solid-icons/io"
 import { useNavigate } from "@solidjs/router"
 
 export default ({ parent_id, type = "アイテム" }: any) => {
-  const { VITE_MEYASUBAKO_API_URL } = import.meta.env
+  const { VITE_MEYASUBAKO_API_URL, VITE_PROMPT } = import.meta.env
 
   const [content, setContent] = createSignal("")
   const navigate = useNavigate()
@@ -27,6 +27,10 @@ export default ({ parent_id, type = "アイテム" }: any) => {
       <div class="card-body">
         <h2 class="card-title">{type}新規作成</h2>
 
+        <Show when={type === "アイテム" && VITE_PROMPT}>
+          <p>{VITE_PROMPT}</p>
+        </Show>
+
         <form onsubmit={handleFormSubmit} class="flex gap-2 my-2">
           <div class="form-control w-full">
             <textarea
@@ -36,7 +40,7 @@ export default ({ parent_id, type = "アイテム" }: any) => {
               onInput={(event: any) => {
                 setContent(event?.target?.value)
               }}
-            ></textarea>
+            />
 
             <label class="label">
               <span class="label-text-alt">{type}は匿名で登録されます</span>
