@@ -3,7 +3,7 @@ import { IoSend } from "solid-icons/io"
 import { useNavigate } from "@solidjs/router"
 
 export default ({ parent_id, type = "アイテム" }: any) => {
-  const { VITE_MEYASUBAKO_API_URL, VITE_PROMPT } = import.meta.env
+  const { VITE_MEYASUBAKO_API_URL, VITE_DESCRIPTION } = import.meta.env
 
   const [content, setContent] = createSignal("")
   const navigate = useNavigate()
@@ -27,8 +27,8 @@ export default ({ parent_id, type = "アイテム" }: any) => {
       <div class="card-body">
         <h2 class="card-title">{type}新規作成</h2>
 
-        <Show when={type === "アイテム" && VITE_PROMPT}>
-          <p>{VITE_PROMPT}</p>
+        <Show when={type === "アイテム" && VITE_DESCRIPTION}>
+          <p>{VITE_DESCRIPTION}</p>
         </Show>
 
         <form onsubmit={handleFormSubmit} class="flex gap-2 my-2">

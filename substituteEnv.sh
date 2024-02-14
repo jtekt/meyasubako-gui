@@ -9,7 +9,7 @@ do
   echo "Processing $file ...";
 
   sed -i 's|VITE_MEYASUBAKO_API_URL_PLACEHOLDER|'${VITE_MEYASUBAKO_API_URL}'|g' $file
-  sed -i 's|VITE_PROMPT_PLACEHOLDER|'${VITE_PROMPT}'|g' $file
+  sed -i 's|VITE_DESCRIPTION_PLACEHOLDER|'${VITE_DESCRIPTION}'|g' $file
 
 done
 
