@@ -7,6 +7,7 @@ import ThemeButton from "./components/ThemeButton"
 import "./index.css"
 import Items from "./Items"
 import Item from "./Item"
+import Login from "./login"
 
 const root = document.getElementById("root")
 
@@ -40,6 +41,7 @@ render(
           <Routes>
             <Route path="/" component={Items} />
             <Route path="/items/:id" component={Item} />
+            <Route path="/login" component={Login} />
           </Routes>
         </Router>
       </main>
