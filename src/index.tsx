@@ -2,7 +2,7 @@
 import { render } from "solid-js/web"
 import { Router, Route, Routes } from "@solidjs/router"
 import { setVotes } from "./store"
-import { CgDarkMode } from "solid-icons/cg"
+import ThemeButton from "./components/ThemeButton"
 
 import "./index.css"
 import Items from "./Items"
@@ -21,24 +21,7 @@ function loadVotesFromLocalStorage() {
   setVotes(JSON.parse(votesString))
 }
 
-function loadThemeFromLocalSorage() {
-  const html = document.querySelector("html")
-  if (!html) return
-  const theme = localStorage.getItem("theme")
-  html.setAttribute("data-theme", theme || "light")
-}
-
-function changeTheme() {
-  const html = document.querySelector("html")
-  if (!html) return
-  const currentTheme = html.getAttribute("data-theme")
-  const newTheme = currentTheme === "dark" ? "light" : "dark"
-  html.setAttribute("data-theme", newTheme)
-  localStorage.setItem("theme", newTheme)
-}
-
 loadVotesFromLocalStorage()
-loadThemeFromLocalSorage()
 
 render(
   () => (
@@ -50,9 +33,7 @@ render(
           alt="JTEKT logo"
         />
         目安箱
-        <button onclick={changeTheme} class="ml-auto btn btn-ghost btn-circle">
-          <CgDarkMode size={24} />
-        </button>
+        <ThemeButton />
       </header>
       <main class="max-w-7xl mx-auto min-h-screen">
         <Router>
