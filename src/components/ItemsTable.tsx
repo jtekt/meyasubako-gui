@@ -6,6 +6,7 @@ import { createIntersectionObserver } from "@solid-primitives/intersection-obser
 import VoteButton from "./VoteButton"
 import SortButtons from "./SortButtons"
 import SearchBox from "./SearchBox"
+import { authData } from "../store"
 
 export default ({ title = "アイテム" }: any) => {
   const { VITE_MEYASUBAKO_API_URL } = import.meta.env
@@ -45,7 +46,11 @@ export default ({ title = "アイテム" }: any) => {
     url.searchParams.set("take", String(take))
     if (params.id) url.searchParams.set("parent_id", params.id)
 
-    const response = await fetch(url)
+    // Add headers if available
+    const headers: HeadersInit = {}
+    if (authData.jwt) headers.authorization = `Bearer ${authData.jwt}`
+
+    const response = await fetch(url, { headers })
     const data = await response.json()
 
     setItems([...items(), ...data.items])

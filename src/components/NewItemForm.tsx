@@ -1,6 +1,7 @@
 import { Show, createSignal } from "solid-js"
 import { IoSend } from "solid-icons/io"
 import { useNavigate } from "@solidjs/router"
+import { authData } from "../store"
 
 export default ({ parent_id, type = "アイテム" }: any) => {
   const { VITE_MEYASUBAKO_API_URL, VITE_DESCRIPTION } = import.meta.env
@@ -12,11 +13,13 @@ export default ({ parent_id, type = "アイテム" }: any) => {
     event.preventDefault()
     if (!confirm("登録しますか？")) return
     const url = `${VITE_MEYASUBAKO_API_URL}/items`
-    const options = {
+    const options: any = {
       method: "POST",
       body: JSON.stringify({ content: content(), parent_id }),
       headers: { "Content-Type": "application/json" },
     }
+
+    if (authData.jwt) options.headers.authorization = `Bearer ${authData.jwt}`
     const response = await fetch(url, options)
     const { id } = await response.json()
     navigate(`/items/${id}`)

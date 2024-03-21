@@ -5,6 +5,7 @@ import VoteButton from "./components/VoteButton"
 import NewItemForm from "./components/NewItemForm"
 import ItemsTable from "./components/ItemsTable"
 import Breadcrumbs from "./components/Breadcrumbs"
+import { authData } from "./store"
 
 export default () => {
   const [item, setItem] = createSignal<any>(null)
@@ -21,7 +22,9 @@ export default () => {
     setItem(null)
     setLoading(true)
     const url = new URL(`${VITE_MEYASUBAKO_API_URL}/items/${params.id}`)
-    const response = await fetch(url)
+    const headers: HeadersInit = {}
+    if (authData.jwt) headers.authorization = `Bearer ${authData.jwt}`
+    const response = await fetch(url, { headers })
     const item = await response.json()
     setItem(item)
     setLoading(false)
@@ -47,7 +50,7 @@ export default () => {
             <h2 class="card-title" style="white-space: pre-line;">
               {item().content}
             </h2>
-            <div class="card-actions justify-end flex items-center">
+            <div class="card-actions flex items-center">
               <VoteButton item={item()} onUpdate={setItem} type="like" />
               <span>{item().likes}</span>
               <VoteButton item={item()} onUpdate={setItem} type="dislike" />
