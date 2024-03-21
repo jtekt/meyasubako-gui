@@ -2,12 +2,15 @@ import { createSignal, Show } from "solid-js"
 import { IoLogIn, IoLogOut } from "solid-icons/io"
 import { FaSolidUser, FaSolidLock } from "solid-icons/fa"
 import { authData, setAuthData } from "./store"
+import { useNavigate } from "@solidjs/router"
+
 export default () => {
   const { VITE_LOGIN_URL } = import.meta.env
 
   const [username, setusername] = createSignal("")
   const [password, setPassword] = createSignal("")
   const [loggingIn, setLoggingIn] = createSignal(false)
+  const navigate = useNavigate()
 
   const handleFormSubmit = async (event: any) => {
     event.preventDefault()
@@ -22,6 +25,7 @@ export default () => {
       const response = await fetch(VITE_LOGIN_URL, options)
       const data = await response.json()
       setAuthData(data)
+      navigate("/")
     } catch (error) {
       alert("Login failed")
       console.error(error)

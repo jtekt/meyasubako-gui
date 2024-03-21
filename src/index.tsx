@@ -1,13 +1,17 @@
 /* @refresh reload */
-import { render } from "solid-js/web"
-import { Router, Route, Routes } from "@solidjs/router"
+import { Show, render } from "solid-js/web"
+import { Router, Route, Routes, Navigate, A } from "@solidjs/router"
 import { setVotes } from "./store"
 import ThemeButton from "./components/ThemeButton"
+import { IoLogOut } from "solid-icons/io"
 
 import "./index.css"
 import Items from "./Items"
 import Item from "./Item"
 import Login from "./login"
+import { authData } from "./store"
+
+const { VITE_LOGIN_URL } = import.meta.env
 
 const root = document.getElementById("root")
 
@@ -33,15 +37,30 @@ render(
           src="/JTEKT_negative.jpg"
           alt="JTEKT logo"
         />
-        目安箱
-        <ThemeButton />
+        <span>目安箱</span>
+        <div class="ml-auto">
+          <Show when={VITE_LOGIN_URL && authData.jwt}>
+            <a href="/logout" class="btn btn-ghost btn-circle">
+              <IoLogOut size={24} />
+            </a>
+          </Show>
+
+          <ThemeButton />
+        </div>
       </header>
       <main class="max-w-7xl mx-auto min-h-screen">
         <Router>
           <Routes>
-            <Route path="/" component={Items} />
-            <Route path="/items/:id" component={Item} />
-            <Route path="/login" component={Login} />
+            <Show when={!VITE_LOGIN_URL || authData.jwt}>
+              <Route path={["/", "/items"]} component={Items} />
+              <Route path="/items/:id" component={Item} />
+            </Show>
+            <Show when={VITE_LOGIN_URL}>
+              <Show when={!authData.jwt}>
+                <Route path="/*" component={() => <Navigate href="/login" />} />
+              </Show>
+              <Route path={["/login", "/logout"]} component={Login} />
+            </Show>
           </Routes>
         </Router>
       </main>
