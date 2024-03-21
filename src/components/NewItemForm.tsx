@@ -4,7 +4,8 @@ import { useNavigate } from "@solidjs/router"
 import { authData } from "../store"
 
 export default ({ parent_id, type = "アイテム" }: any) => {
-  const { VITE_MEYASUBAKO_API_URL, VITE_DESCRIPTION } = import.meta.env
+  const { VITE_MEYASUBAKO_API_URL, VITE_DESCRIPTION, VITE_LOGIN_URL } =
+    import.meta.env
 
   const [content, setContent] = createSignal("")
   const navigate = useNavigate()
@@ -44,10 +45,11 @@ export default ({ parent_id, type = "アイテム" }: any) => {
                 setContent(event?.target?.value)
               }}
             />
-
-            <label class="label">
-              <span class="label-text-alt">{type}は匿名で登録されます</span>
-            </label>
+            <Show when={!VITE_LOGIN_URL}>
+              <label class="label">
+                <span class="label-text-alt">{type}は匿名で登録されます</span>
+              </label>
+            </Show>
           </div>
           <button class="btn btn-primary" type="submit">
             <IoSend size={24} />
