@@ -6,13 +6,14 @@ import NewItemForm from "./components/NewItemForm"
 import ItemsTable from "./components/ItemsTable"
 import Breadcrumbs from "./components/Breadcrumbs"
 import { authData } from "./store"
+import { FaRegularCalendar, FaRegularUser } from "solid-icons/fa"
 
 export default () => {
   const [item, setItem] = createSignal<any>(null)
   const [loading, setLoading] = createSignal(false)
   const params = useParams()
 
-  const { VITE_MEYASUBAKO_API_URL } = import.meta.env
+  const { VITE_MEYASUBAKO_API_URL, VITE_IDENTIFICATION_URL } = import.meta.env
 
   createEffect(() => {
     fetchItem()
@@ -30,8 +31,18 @@ export default () => {
     setLoading(false)
   }
 
-  onMount(() => {
-    fetchItem()
+  async function getUserInfo() {
+    setLoading(true)
+    const headers: HeadersInit = { authorization: `Bearer ${authData.jwt}` }
+    const response = await fetch(VITE_IDENTIFICATION_URL, { headers })
+    const user = await response.json()
+    setItem({ ...item(), user })
+    setLoading(false)
+  }
+
+  onMount(async () => {
+    await fetchItem()
+    if (VITE_IDENTIFICATION_URL && item().user_id) getUserInfo()
   })
 
   return (
@@ -41,12 +52,23 @@ export default () => {
           <span class="loading loading-spinner loading-lg" />
         </div>
       </Show>
-      <Show when={item()}>
+      <Show when={!loading() && item()}>
         <Breadcrumbs item={item} />
 
         <div class="card bg-base-100 shadow-xl">
           <div class="card-body">
-            <p>{formatDate(item().time)}</p>
+            <div class="flex gap-6">
+              <div class="flex gap-2 items-center">
+                <FaRegularCalendar />
+                <span>{formatDate(item().time)}</span>
+              </div>
+              <Show when={item().user}>
+                <div class="flex gap-2 items-center">
+                  <FaRegularUser />
+                  <span>{item().user.display_name}</span>
+                </div>
+              </Show>
+            </div>
             <h2 class="card-title" style="white-space: pre-line;">
               {item().content}
             </h2>
