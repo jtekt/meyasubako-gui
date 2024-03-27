@@ -1,7 +1,7 @@
 import { createSignal, Show } from "solid-js"
 import { FaRegularThumbsUp, FaRegularThumbsDown } from "solid-icons/fa"
 import { votes, setVotes } from "../store"
-import { authData } from "../store"
+import { httpRequest } from "../utils"
 
 export default ({ type, item, onUpdate }: any) => {
   const { VITE_MEYASUBAKO_API_URL } = import.meta.env
@@ -33,9 +33,7 @@ export default ({ type, item, onUpdate }: any) => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     }
-    if (authData.jwt) options.headers.authorization = `Bearer ${authData.jwt}`
-    const response = await fetch(url, options)
-    const data = await response.json()
+    const data = await httpRequest(url, options)
     onUpdate(data)
     setLoading(false)
   }

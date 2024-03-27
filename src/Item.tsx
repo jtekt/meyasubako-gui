@@ -1,19 +1,19 @@
 import { createEffect, createSignal, onMount, Show } from "solid-js"
 import { useParams } from "@solidjs/router"
-import { formatDate } from "./utils"
+import { formatDate, httpRequest } from "./utils"
 import VoteButton from "./components/VoteButton"
 import NewItemForm from "./components/NewItemForm"
 import ItemsTable from "./components/ItemsTable"
 import Breadcrumbs from "./components/Breadcrumbs"
-import { authData } from "./store"
 import { FaRegularCalendar, FaRegularUser } from "solid-icons/fa"
+import { authData } from "./store"
 
 export default () => {
   const [item, setItem] = createSignal<any>(null)
   const [loading, setLoading] = createSignal(false)
   const params = useParams()
 
-  const { VITE_MEYASUBAKO_API_URL, VITE_IDENTIFICATION_URL } = import.meta.env
+  const { VITE_MEYASUBAKO_API_URL, VITE_USER_MANAGER_API_URL } = import.meta.env
 
   createEffect(() => {
     fetchItem()
@@ -23,26 +23,24 @@ export default () => {
     setItem(null)
     setLoading(true)
     const url = new URL(`${VITE_MEYASUBAKO_API_URL}/items/${params.id}`)
-    const headers: HeadersInit = {}
-    if (authData.jwt) headers.authorization = `Bearer ${authData.jwt}`
-    const response = await fetch(url, { headers })
-    const item = await response.json()
+    const item = await httpRequest(url)
     setItem(item)
     setLoading(false)
   }
 
   async function getUserInfo() {
     setLoading(true)
-    const headers: HeadersInit = { authorization: `Bearer ${authData.jwt}` }
-    const response = await fetch(VITE_IDENTIFICATION_URL, { headers })
-    const user = await response.json()
+    if (!VITE_USER_MANAGER_API_URL || !authData.jwt) return
+    // PROBLEM: what if using another user manager?
+    const url = `${VITE_USER_MANAGER_API_URL}/v3/users/${item().user_id}`
+    const user = await httpRequest(url)
     setItem({ ...item(), user })
     setLoading(false)
   }
 
   onMount(async () => {
     await fetchItem()
-    if (VITE_IDENTIFICATION_URL && item().user_id) getUserInfo()
+    if (VITE_USER_MANAGER_API_URL && item().user_id) getUserInfo()
   })
 
   return (

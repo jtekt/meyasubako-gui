@@ -1,12 +1,11 @@
 import { For, createEffect, createSignal, Show, on } from "solid-js"
-import { formatDate } from "../utils"
+import { formatDate, httpRequest } from "../utils"
 import { FaRegularComment } from "solid-icons/fa"
 import { A, useParams, useLocation } from "@solidjs/router"
 import { createIntersectionObserver } from "@solid-primitives/intersection-observer"
 import VoteButton from "./VoteButton"
 import SortButtons from "./SortButtons"
 import SearchBox from "./SearchBox"
-import { authData } from "../store"
 
 export default ({ title = "アイテム" }: any) => {
   const { VITE_MEYASUBAKO_API_URL } = import.meta.env
@@ -46,12 +45,7 @@ export default ({ title = "アイテム" }: any) => {
     url.searchParams.set("take", String(take))
     if (params.id) url.searchParams.set("parent_id", params.id)
 
-    // Add headers if available
-    const headers: HeadersInit = {}
-    if (authData.jwt) headers.authorization = `Bearer ${authData.jwt}`
-
-    const response = await fetch(url, { headers })
-    const data = await response.json()
+    const data = await httpRequest(url)
 
     setItems([...items(), ...data.items])
     setTotal(data.total)
