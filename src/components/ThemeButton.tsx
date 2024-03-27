@@ -21,7 +21,7 @@ export default () => {
   loadThemeFromLocalSorage()
 
   return (
-    <button onclick={changeTheme} class="ml-auto btn btn-ghost btn-circle">
+    <button onclick={changeTheme} class="btn btn-ghost btn-circle">
       <CgDarkMode size={24} />
     </button>
   )
