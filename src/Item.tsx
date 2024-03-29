@@ -13,7 +13,7 @@ export default () => {
   const [loading, setLoading] = createSignal(false)
   const params = useParams()
 
-  const { VITE_MEYASUBAKO_API_URL, VITE_USER_MANAGER_API_URL } = import.meta.env
+  const { VITE_MEYASUBAKO_API_URL, VITE_USER_INFO_URL } = import.meta.env
 
   createEffect(() => {
     fetchItem()
@@ -30,9 +30,9 @@ export default () => {
 
   async function getUserInfo() {
     setLoading(true)
-    if (!VITE_USER_MANAGER_API_URL || !authData.jwt) return
+    if (!VITE_USER_INFO_URL || !authData.jwt) return
     // PROBLEM: what if using another user manager?
-    const url = `${VITE_USER_MANAGER_API_URL}/v3/users/${item().user_id}`
+    const url = VITE_USER_INFO_URL.replace(":user_id", item().user_id)
     const user = await httpRequest(url)
     setItem({ ...item(), user })
     setLoading(false)
@@ -40,7 +40,7 @@ export default () => {
 
   onMount(async () => {
     await fetchItem()
-    if (VITE_USER_MANAGER_API_URL && item().user_id) getUserInfo()
+    if (VITE_USER_INFO_URL && item().user_id) getUserInfo()
   })
 
   return (
