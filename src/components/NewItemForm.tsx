@@ -1,9 +1,10 @@
 import { Show, createSignal } from "solid-js"
 import { IoSend } from "solid-icons/io"
 import { useNavigate } from "@solidjs/router"
-
+import { httpRequest } from "../utils"
 export default ({ parent_id, type = "アイテム" }: any) => {
-  const { VITE_MEYASUBAKO_API_URL, VITE_DESCRIPTION } = import.meta.env
+  const { VITE_MEYASUBAKO_API_URL, VITE_DESCRIPTION, VITE_LOGIN_URL } =
+    import.meta.env
 
   const [content, setContent] = createSignal("")
   const navigate = useNavigate()
@@ -12,13 +13,13 @@ export default ({ parent_id, type = "アイテム" }: any) => {
     event.preventDefault()
     if (!confirm("登録しますか？")) return
     const url = `${VITE_MEYASUBAKO_API_URL}/items`
-    const options = {
+    const options: RequestInit = {
       method: "POST",
       body: JSON.stringify({ content: content(), parent_id }),
       headers: { "Content-Type": "application/json" },
     }
-    const response = await fetch(url, options)
-    const { id } = await response.json()
+
+    const { id } = await httpRequest(url, options)
     navigate(`/items/${id}`)
   }
 
@@ -41,10 +42,11 @@ export default ({ parent_id, type = "アイテム" }: any) => {
                 setContent(event?.target?.value)
               }}
             />
-
-            <label class="label">
-              <span class="label-text-alt">{type}は匿名で登録されます</span>
-            </label>
+            <Show when={!VITE_LOGIN_URL}>
+              <label class="label">
+                <span class="label-text-alt">{type}は匿名で登録されます</span>
+              </label>
+            </Show>
           </div>
           <button class="btn btn-primary" type="submit">
             <IoSend size={24} />

@@ -1,6 +1,7 @@
 import { createSignal, Show } from "solid-js"
 import { FaRegularThumbsUp, FaRegularThumbsDown } from "solid-icons/fa"
 import { votes, setVotes } from "../store"
+import { httpRequest } from "../utils"
 
 export default ({ type, item, onUpdate }: any) => {
   const { VITE_MEYASUBAKO_API_URL } = import.meta.env
@@ -28,12 +29,11 @@ export default ({ type, item, onUpdate }: any) => {
   async function sendRequest(param: string) {
     setLoading(true)
     const url = `${VITE_MEYASUBAKO_API_URL}/items/${item.id}/${param}`
-    const options = {
+    const options: any = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     }
-    const response = await fetch(url, options)
-    const data = await response.json()
+    const data = await httpRequest(url, options)
     onUpdate(data)
     setLoading(false)
   }

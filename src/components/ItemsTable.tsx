@@ -1,5 +1,5 @@
 import { For, createEffect, createSignal, Show, on } from "solid-js"
-import { formatDate } from "../utils"
+import { formatDate, httpRequest } from "../utils"
 import { FaRegularComment } from "solid-icons/fa"
 import { A, useParams, useLocation } from "@solidjs/router"
 import { createIntersectionObserver } from "@solid-primitives/intersection-observer"
@@ -45,8 +45,7 @@ export default ({ title = "アイテム" }: any) => {
     url.searchParams.set("take", String(take))
     if (params.id) url.searchParams.set("parent_id", params.id)
 
-    const response = await fetch(url)
-    const data = await response.json()
+    const data = await httpRequest(url)
 
     setItems([...items(), ...data.items])
     setTotal(data.total)
