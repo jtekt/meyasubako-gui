@@ -47,7 +47,7 @@ export default () => {
     <>
       <Show when={loading()}>
         <div class="text-center">
-          <span class="loading loading-spinner loading-lg" />
+          <span class="loading loading-spinner loading-lg m-8" />
         </div>
       </Show>
       <Show when={!loading() && item()}>
