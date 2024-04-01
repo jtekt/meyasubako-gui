@@ -2,6 +2,8 @@ import { Show, createSignal } from "solid-js"
 import { IoSend } from "solid-icons/io"
 import { useNavigate } from "@solidjs/router"
 import { httpRequest } from "../utils"
+import { t } from "./LocaleSelector"
+
 export default ({ parent_id, type = "アイテム" }: any) => {
   const { VITE_MEYASUBAKO_API_URL, VITE_DESCRIPTION, VITE_LOGIN_URL } =
     import.meta.env

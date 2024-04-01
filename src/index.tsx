@@ -3,6 +3,7 @@ import { Show, render } from "solid-js/web"
 import { Router, Route, Routes, Navigate, A } from "@solidjs/router"
 import { setVotes } from "./store"
 import ThemeButton from "./components/ThemeButton"
+import LocaleSelector from "./components/LocaleSelector"
 import { IoLogOut } from "solid-icons/io"
 
 import "./index.css"
@@ -39,6 +40,8 @@ render(
         />
         <span>目安箱</span>
         <div class="ml-auto">
+          <LocaleSelector />
+
           <Show when={VITE_LOGIN_URL && authData.jwt}>
             <a href="/logout" class="btn btn-ghost btn-circle">
               <IoLogOut size={24} />

@@ -1,6 +1,7 @@
 import { useSearchParams } from "@solidjs/router"
 import { createSignal } from "solid-js"
 import { FiSearch } from "solid-icons/fi"
+import { t } from "./LocaleSelector"
 
 export default () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -20,7 +21,7 @@ export default () => {
             setSearch(event?.target?.value)
           }}
           value={search()}
-          placeholder="検索"
+          placeholder={t("search")}
           class="input input-bordered w-full"
         />
       </div>

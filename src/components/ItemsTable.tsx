@@ -6,8 +6,9 @@ import { createIntersectionObserver } from "@solid-primitives/intersection-obser
 import VoteButton from "./VoteButton"
 import SortButtons from "./SortButtons"
 import SearchBox from "./SearchBox"
+import { t } from "./LocaleSelector"
 
-export default ({ title = "アイテム" }: any) => {
+export default ({ title = t("items") }: any) => {
   const { VITE_MEYASUBAKO_API_URL } = import.meta.env
 
   const [items, setItems] = createSignal<any>([])
@@ -66,7 +67,7 @@ export default ({ title = "アイテム" }: any) => {
     <div class="card bg-base-100 shadow-xl my-4">
       <div class="card-body">
         <h2 class="card-title">
-          {title} ({total()}件)
+          {title} ({total()})
         </h2>
         <Show when={total()}>
           <div>
@@ -76,15 +77,15 @@ export default ({ title = "アイテム" }: any) => {
             <thead>
               <tr>
                 <th>
-                  日付
+                  {t("date")}
                   <SortButtons sort="time" />
                 </th>
-                <th>内容</th>
+                <th>{t("content")}</th>
                 <th>
-                  いいね
+                  {t("likes")}
                   <SortButtons sort="likes" />
                 </th>
-                <th>コメント</th>
+                <th>{t("comments")}</th>
               </tr>
             </thead>
             <tbody>
