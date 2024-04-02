@@ -1,6 +1,7 @@
 import { For } from "solid-js"
 import { A } from "@solidjs/router"
 import { VsHome } from "solid-icons/vs"
+import { t } from "./LocaleSelector"
 
 export default ({ item }: any) => {
   const getParentsRecursively = (item: any) => {
@@ -17,7 +18,7 @@ export default ({ item }: any) => {
         <li>
           <A href={`/`} class="btn">
             <VsHome size={20} />
-            <span>ホーム</span>
+            <span>{t("home")}</span>
           </A>
         </li>
         <For each={getParentsRecursively(item())}>

@@ -8,7 +8,7 @@ import SortButtons from "./SortButtons"
 import SearchBox from "./SearchBox"
 import { t } from "./LocaleSelector"
 
-export default ({ title = t("items") }: any) => {
+export default ({ type = "items" }: any) => {
   const { VITE_MEYASUBAKO_API_URL } = import.meta.env
 
   const [items, setItems] = createSignal<any>([])
@@ -67,7 +67,7 @@ export default ({ title = t("items") }: any) => {
     <div class="card bg-base-100 shadow-xl my-4">
       <div class="card-body">
         <h2 class="card-title">
-          {title} ({total()})
+          {t(type === "comments" ? "comments" : "items")} ({total()})
         </h2>
         <Show when={total()}>
           <div>

@@ -4,7 +4,7 @@ import { useNavigate } from "@solidjs/router"
 import { httpRequest } from "../utils"
 import { t } from "./LocaleSelector"
 
-export default ({ parent_id, type = "アイテム" }: any) => {
+export default ({ parent_id, type = "item" }: any) => {
   const { VITE_MEYASUBAKO_API_URL, VITE_DESCRIPTION, VITE_LOGIN_URL } =
     import.meta.env
 
@@ -28,9 +28,11 @@ export default ({ parent_id, type = "アイテム" }: any) => {
   return (
     <div class="card bg-base-100 shadow-xl my-4">
       <div class="card-body">
-        <h2 class="card-title">{type}新規作成</h2>
+        <h2 class="card-title">
+          {t(type === "comment" ? "newComment" : "newItem")}
+        </h2>
 
-        <Show when={type === "アイテム" && VITE_DESCRIPTION}>
+        <Show when={type === "item" && VITE_DESCRIPTION}>
           <p>{VITE_DESCRIPTION}</p>
         </Show>
 
@@ -39,7 +41,7 @@ export default ({ parent_id, type = "アイテム" }: any) => {
             <textarea
               class="textarea textarea-bordered w-full"
               rows="1"
-              placeholder={`新しい${type}`}
+              placeholder={t(type === "comment" ? "newComment" : "newItem")}
               onInput={(event: any) => {
                 setContent(event?.target?.value)
               }}

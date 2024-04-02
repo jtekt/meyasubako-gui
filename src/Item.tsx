@@ -7,6 +7,7 @@ import ItemsTable from "./components/ItemsTable"
 import Breadcrumbs from "./components/Breadcrumbs"
 import { FaRegularCalendar, FaRegularUser } from "solid-icons/fa"
 import { authData } from "./store"
+import { t } from "./components/LocaleSelector"
 
 export default () => {
   const [item, setItem] = createSignal<any>(null)
@@ -55,6 +56,7 @@ export default () => {
 
         <div class="card bg-base-100 shadow-xl">
           <div class="card-body">
+            {/* Metadata */}
             <div class="flex gap-6">
               <div class="flex gap-2 items-center">
                 <FaRegularCalendar />
@@ -67,7 +69,8 @@ export default () => {
                 </div>
               </Show>
             </div>
-            <h2 class="card-title" style="white-space: pre-line;">
+
+            <h2 class="card-title my-4" style="white-space: pre-line;">
               {item().content}
             </h2>
             <div class="card-actions flex items-center">
@@ -78,9 +81,9 @@ export default () => {
           </div>
         </div>
 
-        <NewItemForm parent_id={item().id} type="コメント" />
+        <NewItemForm parent_id={item().id} type="comment" />
 
-        <ItemsTable title="コメント" />
+        <ItemsTable type="comments" />
       </Show>
     </>
   )
