@@ -3,6 +3,7 @@ import { createSignal, createMemo } from "solid-js"
 import { RiEditorTranslate2 } from "solid-icons/ri"
 import ja from "../locales/ja.json"
 import en from "../locales/en.json"
+
 const dictionaries = { en, ja }
 
 export type Locale = "en" | "ja"
@@ -33,22 +34,16 @@ export default () => {
         tabindex="0"
         class="p-2 shadow menu dropdown-content z-[1] rounded-box bg-black"
       >
-        <li>
-          <button
-            onClick={() => updateLocale("en")}
-            class="btn btn-ghost btn-circle"
-          >
-            en
-          </button>
-        </li>
-        <li>
-          <button
-            onClick={() => updateLocale("ja")}
-            class="btn btn-ghost btn-circle"
-          >
-            ja
-          </button>
-        </li>
+        {Object.keys(dictionaries).map((l) => (
+          <li>
+            <button
+              onClick={() => updateLocale(l as Locale)}
+              class="btn btn-ghost btn-circle"
+            >
+              {l}
+            </button>
+          </li>
+        ))}
       </ul>
     </div>
   )
