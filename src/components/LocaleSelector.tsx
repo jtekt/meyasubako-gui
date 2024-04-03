@@ -10,13 +10,18 @@ export type Locale = "en" | "ja"
 export let t: any
 
 export default () => {
-  const [locale, setLocale] = createSignal<Locale>("ja")
+  const initialLocale = (localStorage.getItem("locale") as Locale) || "ja"
 
-  // TODO: save in localStorage
+  const [locale, setLocale] = createSignal<Locale>(initialLocale)
 
   const dict = createMemo(() => i18n.flatten(dictionaries[locale()]))
 
   t = i18n.translator(dict)
+
+  function updateLocale(newLocale: Locale) {
+    localStorage.setItem("locale", newLocale)
+    setLocale(newLocale)
+  }
 
   return (
     <div class="dropdown">
@@ -30,7 +35,7 @@ export default () => {
       >
         <li>
           <button
-            onClick={() => setLocale("en")}
+            onClick={() => updateLocale("en")}
             class="btn btn-ghost btn-circle"
           >
             en
@@ -38,7 +43,7 @@ export default () => {
         </li>
         <li>
           <button
-            onClick={() => setLocale("ja")}
+            onClick={() => updateLocale("ja")}
             class="btn btn-ghost btn-circle"
           >
             ja
