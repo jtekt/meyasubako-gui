@@ -1,20 +1,20 @@
 import { createEffect, createSignal, onMount, Show } from "solid-js"
 import { useParams } from "@solidjs/router"
-import { formatDate, httpRequest } from "./utils"
+import { formatDate } from "./utils"
 import VoteButton from "./components/VoteButton"
 import NewItemForm from "./components/NewItemForm"
 import ItemsTable from "./components/ItemsTable"
 import Breadcrumbs from "./components/Breadcrumbs"
 import { FaRegularCalendar, FaRegularUser } from "solid-icons/fa"
 import { authData } from "./store"
-import { t } from "./components/LocaleSelector"
+import axios from "axios"
 
 export default () => {
   const [item, setItem] = createSignal<any>(null)
   const [loading, setLoading] = createSignal(false)
   const params = useParams()
 
-  const { VITE_MEYASUBAKO_API_URL, VITE_USER_INFO_URL } = import.meta.env
+  const { VITE_USER_INFO_URL } = import.meta.env
 
   createEffect(() => {
     fetchItem()
@@ -23,19 +23,17 @@ export default () => {
   async function fetchItem() {
     setItem(null)
     setLoading(true)
-    const url = new URL(`${VITE_MEYASUBAKO_API_URL}/items/${params.id}`)
-    const item = await httpRequest(url)
-    setItem(item)
+    const { data } = await axios.get(`/items/${params.id}`)
+    setItem(data)
     setLoading(false)
   }
 
   async function getUserInfo() {
     setLoading(true)
     if (!VITE_USER_INFO_URL || !authData.jwt) return
-    // PROBLEM: what if using another user manager?
     const url = VITE_USER_INFO_URL.replace(":user_id", item().user_id)
-    const user = await httpRequest(url)
-    setItem({ ...item(), user })
+    const { data } = await axios.get(url)
+    setItem({ ...item(), user: data })
     setLoading(false)
   }
 

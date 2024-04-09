@@ -5,14 +5,18 @@ import { setVotes } from "./store"
 import ThemeButton from "./components/ThemeButton"
 import LocaleSelector from "./components/LocaleSelector"
 import { IoLogOut } from "solid-icons/io"
-
+import axios from "axios"
 import "./index.css"
 import Items from "./Items"
 import Item from "./Item"
 import Login from "./login"
 import { authData } from "./store"
 
-const { VITE_LOGIN_URL } = import.meta.env
+const { VITE_MEYASUBAKO_API_URL, VITE_LOGIN_URL } = import.meta.env
+
+axios.defaults.baseURL = VITE_MEYASUBAKO_API_URL
+if (authData.jwt)
+  axios.defaults.headers.common["Authorization"] = `Bearer ${authData.jwt}`
 
 const root = document.getElementById("root")
 

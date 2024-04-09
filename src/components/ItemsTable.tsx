@@ -1,5 +1,5 @@
 import { For, createEffect, createSignal, Show, on } from "solid-js"
-import { formatDate, httpRequest } from "../utils"
+import { formatDate } from "../utils"
 import { FaRegularComment } from "solid-icons/fa"
 import { A, useParams, useLocation } from "@solidjs/router"
 import { createIntersectionObserver } from "@solid-primitives/intersection-observer"
@@ -7,9 +7,8 @@ import VoteButton from "./VoteButton"
 import SortButtons from "./SortButtons"
 import SearchBox from "./SearchBox"
 import { t } from "./LocaleSelector"
-
+import axios from "axios"
 export default ({ type = "items" }: any) => {
-  const { VITE_MEYASUBAKO_API_URL } = import.meta.env
 
   const [items, setItems] = createSignal<any>([])
   const [total, setTotal] = createSignal(0)
@@ -17,7 +16,7 @@ export default ({ type = "items" }: any) => {
   const [intersectionObserverTargets, setIntersectionObserverTargets] =
     createSignal<Element[]>([])
 
-  const params = useParams()
+  const urlParams = useParams()
   const location = useLocation()
   const take = 50
   let intersecting = false
@@ -40,13 +39,15 @@ export default ({ type = "items" }: any) => {
 
   async function fetchItems() {
     setLoading(true)
-    const url = new URL(`${VITE_MEYASUBAKO_API_URL}/items${location.search}`)
 
-    url.searchParams.set("skip", String(items().length))
-    url.searchParams.set("take", String(take))
-    if (params.id) url.searchParams.set("parent_id", params.id)
+    const route = `/items${location.search}`
+    const params: any = {
+      skip: items().length,
+      take,
+    }
+    if (urlParams.id) params.parent_id = urlParams.id
 
-    const data = await httpRequest(url)
+    const { data } = await axios.get(route, { params })
 
     setItems([...items(), ...data.items])
     setTotal(data.total)

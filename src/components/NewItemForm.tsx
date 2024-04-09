@@ -1,12 +1,10 @@
 import { Show, createSignal } from "solid-js"
 import { IoSend } from "solid-icons/io"
 import { useNavigate } from "@solidjs/router"
-import { httpRequest } from "../utils"
 import { t } from "./LocaleSelector"
-
+import axios from "axios"
 export default ({ parent_id, type = "item" }: any) => {
-  const { VITE_MEYASUBAKO_API_URL, VITE_DESCRIPTION, VITE_LOGIN_URL } =
-    import.meta.env
+  const { VITE_DESCRIPTION, VITE_LOGIN_URL } = import.meta.env
 
   const [content, setContent] = createSignal("")
   const navigate = useNavigate()
@@ -14,14 +12,13 @@ export default ({ parent_id, type = "item" }: any) => {
   const handleFormSubmit = async (event: any) => {
     event.preventDefault()
     if (!confirm("登録しますか？")) return
-    const url = `${VITE_MEYASUBAKO_API_URL}/items`
-    const options: RequestInit = {
-      method: "POST",
-      body: JSON.stringify({ content: content(), parent_id }),
-      headers: { "Content-Type": "application/json" },
-    }
 
-    const { id } = await httpRequest(url, options)
+    const { data } = await axios.post("/items", {
+      content: content(),
+      parent_id,
+    })
+    const { id } = data
+
     navigate(`/items/${id}`)
   }
 

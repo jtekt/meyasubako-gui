@@ -1,11 +1,9 @@
 import { createSignal, Show } from "solid-js"
 import { FaRegularThumbsUp, FaRegularThumbsDown } from "solid-icons/fa"
 import { votes, setVotes } from "../store"
-import { httpRequest } from "../utils"
+import axios from "axios"
 
 export default ({ type, item, onUpdate }: any) => {
-  const { VITE_MEYASUBAKO_API_URL } = import.meta.env
-
   const [loading, setLoading] = createSignal(false)
 
   const findVote = () => votes.find((vote: any) => vote.item_id === item.id)
@@ -28,12 +26,9 @@ export default ({ type, item, onUpdate }: any) => {
 
   async function sendRequest(param: string) {
     setLoading(true)
-    const url = `${VITE_MEYASUBAKO_API_URL}/items/${item.id}/${param}`
-    const options: any = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    }
-    const data = await httpRequest(url, options)
+
+    const { data } = await axios.post(`/items/${item.id}/${param}`)
+
     onUpdate(data)
     setLoading(false)
   }

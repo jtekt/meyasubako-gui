@@ -3,7 +3,7 @@ import { IoLogIn, IoLogOut } from "solid-icons/io"
 import { FaSolidUser, FaSolidLock } from "solid-icons/fa"
 import { authData, setAuthData } from "./store"
 import { useNavigate } from "@solidjs/router"
-
+import axios from "axios"
 export default () => {
   const { VITE_LOGIN_URL } = import.meta.env
 
@@ -14,16 +14,14 @@ export default () => {
 
   const handleFormSubmit = async (event: any) => {
     event.preventDefault()
-    const options = {
-      method: "POST",
-      body: JSON.stringify({ username: username(), password: password() }),
-      headers: { "Content-Type": "application/json" },
-    }
 
     try {
       setLoggingIn(true)
-      const response = await fetch(VITE_LOGIN_URL, options)
-      const data = await response.json()
+      const { data } = await axios.post(VITE_LOGIN_URL, {
+        username: username(),
+        password: password(),
+      })
+      axios.defaults.headers.common["Authorization"] = `Bearer ${data.jwt}`
       setAuthData(data)
       navigate("/")
     } catch (error) {
@@ -35,6 +33,7 @@ export default () => {
   }
 
   const handleLogout = () => {
+    delete axios.defaults.headers.common["Authorization"]
     setAuthData({ user: null, jwt: null })
   }
 
