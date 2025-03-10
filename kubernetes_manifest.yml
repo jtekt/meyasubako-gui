@@ -34,21 +34,21 @@ spec:
   # type: ClusterIP
   type: NodePort
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: ${APPLICATION_NAME}
-  annotations:
-    kubernetes.io/ingress.class: public
-spec:
-  rules:
-    - host: ${K8S_INGRESS_HOST}
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: ${APPLICATION_NAME}
-                port:
-                  number: 80
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: ${APPLICATION_NAME}
+#   annotations:
+#     kubernetes.io/ingress.class: public
+# spec:
+#   rules:
+#     - host: ${K8S_INGRESS_HOST}
+#       http:
+#         paths:
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: ${APPLICATION_NAME}
+#                 port:
+#                   number: 80
